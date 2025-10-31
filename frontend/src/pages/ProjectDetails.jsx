@@ -30,10 +30,12 @@ const ProjectDetails = () => {
   const loadProject = async () => {
     try {
       const response = await projectService.getById(id);
-      setProject(response.data.project);
+      const projectData = response.data.project;
+      console.log('Projet chargé:', projectData); // Debug: voir les données
+      setProject(projectData);
       setComments(response.data.comments || []);
-      setLiked(response.data.project.hasLiked || false);
-      setLikesCount(response.data.project.likes_count || 0);
+      setLiked(projectData.hasLiked || false);
+      setLikesCount(projectData.likes_count || 0);
     } catch (error) {
       console.error('Erreur lors du chargement du projet:', error);
     } finally {
@@ -71,6 +73,20 @@ const ProjectDetails = () => {
       setNewComment('');
     } catch (error) {
       console.error('Erreur lors de l\'ajout du commentaire:', error);
+    }
+  };
+
+  const handleContactEmail = async (e) => {
+    e.preventDefault();
+    const email = project.user_email || project.email;
+    
+    try {
+      // Copier l'email dans le presse-papiers
+      await navigator.clipboard.writeText(email);
+      alert(`✅ Email copié dans le presse-papiers !\n\n📧 ${email}\n\nVous pouvez maintenant coller cet email dans votre client de messagerie (Gmail, Outlook, etc.)`);
+    } catch (error) {
+      // Si la copie échoue, afficher l'email
+      alert(`📧 Email du porteur de projet :\n\n${email}\n\nVeuillez copier cet email manuellement.`);
     }
   };
 
@@ -269,20 +285,17 @@ const ProjectDetails = () => {
                 )}
                 <h4>{project.first_name} {project.last_name}</h4>
                 {project.bio && <p className="author-bio">{project.bio}</p>}
-                {project.localisation && (
-                  <p className="author-location">📍 {project.localisation}</p>
-                )}
               </div>
 
               {/* Bouton de contact par email */}
-              {project.user_email && (
-                <a 
-                  href={`mailto:${project.user_email}?subject=À propos de votre projet: ${encodeURIComponent(project.titre)}&body=Bonjour ${project.first_name},%0D%0A%0D%0AJe suis intéressé(e) par votre projet "${project.titre}" sur TalentsAfricains.%0D%0A%0D%0A`}
+              {(project.user_email || project.email) && (
+                <button 
+                  onClick={handleContactEmail}
                   className="btn btn-primary btn-contact"
                   style={{ width: '100%', marginBottom: '1rem' }}
                 >
                   ✉️ Contacter par email
-                </a>
+                </button>
               )}
 
               {(project.linkedin || project.twitter || project.website) && (
