@@ -7,19 +7,24 @@
     "start": "node src/server.js",
     "dev": "nodemon src/server.js"
   },
-  "keywords": ["talents", "africa", "innovation", "api"],
+  "keywords": [
+    "talents",
+    "africa",
+    "innovation",
+    "api"
+  ],
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.18.2",
-    "mysql2": "^3.6.5",
-    "pg": "^8.11.3",
     "bcryptjs": "^2.4.3",
-    "jsonwebtoken": "^9.0.2",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-validator": "^7.0.1",
+    "jsonwebtoken": "^9.0.2",
     "multer": "^1.4.5-lts.1",
-    "express-validator": "^7.0.1"
+    "mysql2": "^3.6.5",
+    "pg": "^8.16.3"
   },
   "devDependencies": {
     "nodemon": "^3.0.2"
