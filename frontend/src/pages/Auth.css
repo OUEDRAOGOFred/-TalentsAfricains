@@ -1,0 +1,235 @@
+/**
+ * Styles des pages d'authentification
+ */
+
+.auth-page {
+  min-height: calc(100vh - 70px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--color-light) 0%, var(--color-white) 100%);
+  padding: var(--spacing-xl) var(--spacing-md);
+}
+
+.auth-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  max-width: 1100px;
+  width: 100%;
+  background: var(--color-white);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-xl);
+}
+
+.auth-box {
+  padding: var(--spacing-xxl) var(--spacing-xl);
+}
+
+.auth-box-wide {
+  grid-column: 1 / -1;
+  max-width: 700px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.auth-header {
+  text-align: center;
+  margin-bottom: var(--spacing-xl);
+}
+
+.auth-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--color-dark);
+  margin-bottom: var(--spacing-sm);
+}
+
+.auth-subtitle {
+  font-size: 1.1rem;
+  color: var(--color-gray);
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-md);
+}
+
+.alert {
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-md);
+  font-size: 0.95rem;
+  margin-bottom: var(--spacing-sm);
+}
+
+.alert-error {
+  background: rgba(244, 67, 54, 0.1);
+  color: var(--color-error);
+  border: 1px solid var(--color-error);
+}
+
+.auth-footer {
+  text-align: center;
+  margin-top: var(--spacing-lg);
+  padding-top: var(--spacing-lg);
+  border-top: 1px solid var(--color-light);
+}
+
+.auth-footer p {
+  color: var(--color-gray);
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+.auth-link {
+  color: var(--color-primary);
+  font-weight: 600;
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.auth-link:hover {
+  color: var(--color-primary-dark);
+  text-decoration: underline;
+}
+
+/* ============================================
+   SECTION VISUELLE
+   ============================================ */
+
+.auth-visual {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  padding: var(--spacing-xxl) var(--spacing-xl);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-white);
+  position: relative;
+  overflow: hidden;
+}
+
+.auth-visual::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+  animation: pulse 15s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.8;
+  }
+}
+
+.visual-content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+}
+
+.visual-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: var(--spacing-md);
+  color: var(--color-white);
+}
+
+.visual-text {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  margin-bottom: var(--spacing-lg);
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.visual-decoration {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-lg);
+  font-size: 3rem;
+  margin-top: var(--spacing-xl);
+  animation: float 3s ease-in-out infinite;
+}
+
+.decoration-emoji {
+  animation: bounce 2s ease-in-out infinite;
+  display: inline-block;
+}
+
+.decoration-emoji:nth-child(2) {
+  animation-delay: 0.3s;
+}
+
+.decoration-emoji:nth-child(3) {
+  animation-delay: 0.6s;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.visual-benefits {
+  list-style: none;
+  text-align: left;
+  margin-top: var(--spacing-xl);
+  display: inline-block;
+}
+
+.visual-benefits li {
+  font-size: 1.1rem;
+  margin-bottom: var(--spacing-sm);
+  padding-left: var(--spacing-sm);
+  color: rgba(255, 255, 255, 0.95);
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 968px) {
+  .auth-container {
+    grid-template-columns: 1fr;
+  }
+
+  .auth-visual {
+    display: none;
+  }
+
+  .auth-box {
+    padding: var(--spacing-xl) var(--spacing-md);
+  }
+}
+
+@media (max-width: 640px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .auth-title {
+    font-size: 2rem;
+  }
+
+  .auth-box {
+    padding: var(--spacing-lg) var(--spacing-md);
+  }
+}
