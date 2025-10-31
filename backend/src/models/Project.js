@@ -107,8 +107,8 @@ class Project {
   static async findById(id) {
     const [rows] = await db.execute(
       `SELECT p.*, 
-              u.id as author_id, u.first_name, u.last_name, u.email, u.bio, u.photo_profil as author_photo, 
-              u.linkedin, u.twitter, u.website,
+              u.id as author_id, u.first_name, u.last_name, u.email as user_email, u.bio, u.photo_profil as author_photo, 
+              u.linkedin, u.twitter, u.website, u.localisation,
               (SELECT COUNT(*) FROM likes WHERE project_id = p.id) as likes_count,
               (SELECT COUNT(*) FROM comments WHERE project_id = p.id) as comments_count
        FROM projects p

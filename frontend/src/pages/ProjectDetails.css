@@ -310,6 +310,38 @@
   font-size: 0.95rem;
   color: var(--color-gray);
   line-height: 1.5;
+  margin-bottom: var(--spacing-xs);
+}
+
+.author-location {
+  font-size: 0.9rem;
+  color: var(--color-gray);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  margin-top: 0.5rem;
+}
+
+.btn-contact {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+  color: var(--color-white);
+  text-decoration: none;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  transition: all var(--transition-fast);
+  box-shadow: 0 2px 8px rgba(212, 166, 97, 0.3);
+}
+
+.btn-contact:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(212, 166, 97, 0.4);
+  background: linear-gradient(135deg, var(--color-primary-dark), var(--color-primary));
 }
 
 .author-social {

@@ -173,7 +173,7 @@ const ProjectDetails = () => {
 
             {/* Section commentaires */}
             <div className="comments-section">
-              <h2>Commentaires ({comments.length})</h2>
+              <h2>💬 Commentaires ({comments.length})</h2>
 
               {isAuthenticated && (
                 <form onSubmit={handleCommentSubmit} className="comment-form">
@@ -183,36 +183,70 @@ const ProjectDetails = () => {
                     value={newComment}
                     onChange={(e) => setNewComment(e.target.value)}
                     rows="3"
+                    required
                   />
                   <button type="submit" className="btn btn-primary">
-                    Publier
+                    Publier le commentaire
                   </button>
                 </form>
               )}
 
+              {!isAuthenticated && (
+                <div className="login-prompt" style={{ 
+                  padding: '1rem', 
+                  background: '#f0f7ff', 
+                  borderRadius: '8px', 
+                  textAlign: 'center',
+                  marginBottom: '1rem'
+                }}>
+                  <p style={{ margin: 0, color: '#666' }}>
+                    <Link to="/login" style={{ color: 'var(--color-primary)', fontWeight: '600' }}>
+                      Connectez-vous
+                    </Link> pour laisser un commentaire
+                  </p>
+                </div>
+              )}
+
               <div className="comments-list">
-                {comments.map((comment) => (
-                  <div key={comment.id} className="comment-item">
-                    <div className="comment-avatar">
-                      {comment.photo_profil ? (
-                        <img src={`${API_URL.replace('/api', '')}/uploads/${comment.photo_profil}`} alt={comment.first_name} />
-                      ) : (
-                        <div className="avatar-placeholder">
-                          {comment.first_name?.[0]}{comment.last_name?.[0]}
-                        </div>
-                      )}
-                    </div>
-                    <div className="comment-content">
-                      <div className="comment-header">
-                        <strong>{comment.first_name} {comment.last_name}</strong>
-                        <span className="comment-date">
-                          {new Date(comment.created_at).toLocaleDateString('fr-FR')}
-                        </span>
-                      </div>
-                      <p className="comment-text">{comment.content}</p>
-                    </div>
+                {comments.length === 0 ? (
+                  <div className="no-comments" style={{
+                    textAlign: 'center',
+                    padding: '2rem',
+                    color: '#999',
+                    fontStyle: 'italic'
+                  }}>
+                    Aucun commentaire pour le moment. Soyez le premier à commenter!
                   </div>
-                ))}
+                ) : (
+                  comments.map((comment) => (
+                    <div key={comment.id} className="comment-item">
+                      <div className="comment-avatar">
+                        {comment.photo_profil ? (
+                          <img src={`${API_URL.replace('/api', '')}/uploads/${comment.photo_profil}`} alt={comment.first_name} />
+                        ) : (
+                          <div className="avatar-placeholder">
+                            {comment.first_name?.[0]}{comment.last_name?.[0]}
+                          </div>
+                        )}
+                      </div>
+                      <div className="comment-content">
+                        <div className="comment-header">
+                          <strong>{comment.first_name} {comment.last_name}</strong>
+                          <span className="comment-date">
+                            {new Date(comment.created_at).toLocaleDateString('fr-FR', {
+                              day: 'numeric',
+                              month: 'long',
+                              year: 'numeric',
+                              hour: '2-digit',
+                              minute: '2-digit'
+                            })}
+                          </span>
+                        </div>
+                        <p className="comment-text">{comment.content}</p>
+                      </div>
+                    </div>
+                  ))
+                )}
               </div>
             </div>
           </div>
@@ -235,7 +269,21 @@ const ProjectDetails = () => {
                 )}
                 <h4>{project.first_name} {project.last_name}</h4>
                 {project.bio && <p className="author-bio">{project.bio}</p>}
+                {project.localisation && (
+                  <p className="author-location">📍 {project.localisation}</p>
+                )}
               </div>
+
+              {/* Bouton de contact par email */}
+              {project.user_email && (
+                <a 
+                  href={`mailto:${project.user_email}?subject=À propos de votre projet: ${encodeURIComponent(project.titre)}&body=Bonjour ${project.first_name},%0D%0A%0D%0AJe suis intéressé(e) par votre projet "${project.titre}" sur TalentsAfricains.%0D%0A%0D%0A`}
+                  className="btn btn-primary btn-contact"
+                  style={{ width: '100%', marginBottom: '1rem' }}
+                >
+                  ✉️ Contacter par email
+                </a>
+              )}
 
               {(project.linkedin || project.twitter || project.website) && (
                 <div className="author-social">

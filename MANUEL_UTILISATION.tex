@@ -1,0 +1,915 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[french]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{tcolorbox}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{listings}
+\usepackage{fontawesome5}
+
+\geometry{margin=2.5cm}
+
+% Couleurs personnalisées
+\definecolor{primarycolor}{RGB}{45,134,89}
+\definecolor{secondarycolor}{RGB}{212,166,97}
+\definecolor{darkcolor}{RGB}{26,26,46}
+\definecolor{lightgray}{RGB}{245,245,245}
+
+% Configuration des liens
+\hypersetup{
+    colorlinks=true,
+    linkcolor=primarycolor,
+    urlcolor=primarycolor,
+    citecolor=primarycolor
+}
+
+% En-tête et pied de page
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\textcolor{primarycolor}{\textbf{TalentsAfricains}}}
+\fancyhead[R]{\textcolor{gray}{Manuel d'Utilisation}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.5pt}
+\renewcommand{\footrulewidth}{0.5pt}
+
+% Style des titres
+\titleformat{\section}
+  {\normalfont\Large\bfseries\color{primarycolor}}
+  {\thesection}{1em}{}
+  
+\titleformat{\subsection}
+  {\normalfont\large\bfseries\color{secondarycolor}}
+  {\thesubsection}{1em}{}
+
+% Boîtes d'information
+\newtcolorbox{infobox}[1]{
+  colback=lightgray,
+  colframe=primarycolor,
+  fonttitle=\bfseries,
+  title=#1,
+  arc=3mm
+}
+
+\newtcolorbox{warningbox}[1]{
+  colback=yellow!10,
+  colframe=orange,
+  fonttitle=\bfseries,
+  title=#1,
+  arc=3mm
+}
+
+\newtcolorbox{credentialbox}{
+  colback=blue!5,
+  colframe=blue!60,
+  fonttitle=\bfseries,
+  title=\faKey\ Identifiants Administrateur,
+  arc=3mm,
+  boxrule=1.5pt
+}
+
+\begin{document}
+
+% Page de titre
+\begin{titlepage}
+    \centering
+    \vspace*{2cm}
+    
+    {\Huge\bfseries\color{primarycolor} TalentsAfricains\par}
+    \vspace{0.5cm}
+    {\Large\color{secondarycolor} Plateforme de Mise en Valeur des Talents Africains\par}
+    
+    \vspace{2cm}
+    
+    {\LARGE\bfseries Manuel d'Utilisation\par}
+    \vspace{0.5cm}
+    {\large Version 1.0\par}
+    
+    \vspace{3cm}
+    
+    \begin{tcolorbox}[colback=lightgray, colframe=primarycolor, width=0.8\textwidth, arc=5mm]
+        \centering
+        \Large\textbf{Guide Complet}\\[0.3cm]
+        \normalsize
+        Installation • Configuration • Utilisation • Administration
+    \end{tcolorbox}
+    
+    \vfill
+    
+    {\large Développé par\par}
+    {\Large\bfseries\color{primarycolor} Freddy OUEDRAOGO\par}
+    \vspace{0.3cm}
+    {\normalsize \today\par}
+\end{titlepage}
+
+\newpage
+\tableofcontents
+\newpage
+
+% ===================================
+% SECTION 1: PRÉSENTATION
+% ===================================
+\section{Présentation de la Plateforme}
+
+\subsection{Vue d'ensemble}
+
+\textbf{TalentsAfricains} est une plateforme web moderne et innovante conçue pour mettre en lumière les talents africains à travers leurs projets créatifs, entrepreneuriaux et innovants. La plateforme offre un espace où les créateurs peuvent partager leurs réalisations et se connecter avec une communauté engagée.
+
+\subsection{Fonctionnalités Principales}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{\faGlobe\ Découverte de projets} : Parcourir et filtrer les projets par catégorie et localisation
+    \item \textbf{\faUpload\ Publication de projets} : Partager vos créations avec galerie d'images
+    \item \textbf{\faHeart\ Interactions sociales} : Liker et commenter les projets
+    \item \textbf{\faUser\ Profils utilisateurs} : Gérer votre compte et vos projets
+    \item \textbf{\faUserShield\ Panel administrateur} : Gestion complète de la plateforme
+    \item \textbf{\faSearch\ Recherche avancée} : Trouver des projets par mots-clés
+    \item \textbf{\faFilter\ Filtres intelligents} : Tri par popularité, date, catégorie
+\end{itemize}
+
+\subsection{Technologies Utilisées}
+
+\begin{infobox}{Stack Technique}
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Frontend} : React 18.2, Vite 5.4, CSS3 moderne
+    \item \textbf{Backend} : Node.js 22.15, Express.js 4.18
+    \item \textbf{Base de données} : MySQL 8.0
+    \item \textbf{Authentification} : JWT (JSON Web Tokens)
+    \item \textbf{Sécurité} : bcrypt pour le hachage des mots de passe
+    \item \textbf{Upload} : Multer pour la gestion des fichiers
+\end{itemize}
+\end{infobox}
+
+% ===================================
+% SECTION 2: INSTALLATION
+% ===================================
+\newpage
+\section{Installation et Configuration}
+
+\subsection{Prérequis Système}
+
+Avant d'installer la plateforme, assurez-vous que votre système dispose de :
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Node.js} : Version 18.x ou supérieure
+    \item \textbf{MySQL} : Version 8.0 ou supérieure
+    \item \textbf{Git} : Pour cloner le dépôt
+    \item \textbf{npm} : Gestionnaire de paquets Node.js
+\end{itemize}
+
+\subsection{Installation pas à pas}
+
+\subsubsection{1. Cloner le dépôt}
+
+\begin{tcolorbox}[colback=darkcolor!5, colframe=darkcolor, fonttitle=\ttfamily]
+git clone https://github.com/OUEDRAOGOFred/-TalentsAfricains.git\\
+cd TalentsAfricains
+\end{tcolorbox}
+
+\subsubsection{2. Configuration de la base de données}
+
+\begin{enumerate}[leftmargin=*]
+    \item Créer la base de données MySQL :
+    \begin{tcolorbox}[colback=darkcolor!5, colframe=darkcolor, fonttitle=\ttfamily]
+    mysql -u root -p < database/talentsafricains.sql
+    \end{tcolorbox}
+    
+    \item Créer le compte administrateur :
+    \begin{tcolorbox}[colback=darkcolor!5, colframe=darkcolor, fonttitle=\ttfamily]
+    mysql -u root -p talentsafricains < database/add\_admin.sql
+    \end{tcolorbox}
+\end{enumerate}
+
+\subsubsection{3. Configuration du Backend}
+
+\begin{enumerate}[leftmargin=*]
+    \item Naviguer vers le dossier backend :
+    \begin{tcolorbox}[colback=darkcolor!5, colframe=darkcolor, fonttitle=\ttfamily]
+    cd backend
+    \end{tcolorbox}
+    
+    \item Installer les dépendances :
+    \begin{tcolorbox}[colback=darkcolor!5, colframe=darkcolor, fonttitle=\ttfamily]
+    npm install
+    \end{tcolorbox}
+    
+    \item Créer le fichier \texttt{.env} :
+    \begin{tcolorbox}[colback=darkcolor!5, colframe=darkcolor, fonttitle=\ttfamily, fontsize=\small]
+    DB\_HOST=localhost\\
+    DB\_USER=root\\
+    DB\_PASSWORD=votre\_mot\_de\_passe\\
+    DB\_NAME=talentsafricains\\
+    JWT\_SECRET=votre\_secret\_jwt\_tres\_securise\\
+    PORT=5000
+    \end{tcolorbox}
+    
+    \item Démarrer le serveur backend :
+    \begin{tcolorbox}[colback=darkcolor!5, colframe=darkcolor, fonttitle=\ttfamily]
+    npm run dev
+    \end{tcolorbox}
+\end{enumerate}
+
+\subsubsection{4. Configuration du Frontend}
+
+\begin{enumerate}[leftmargin=*]
+    \item Naviguer vers le dossier frontend :
+    \begin{tcolorbox}[colback=darkcolor!5, colframe=darkcolor, fonttitle=\ttfamily]
+    cd ../frontend
+    \end{tcolorbox}
+    
+    \item Installer les dépendances :
+    \begin{tcolorbox}[colback=darkcolor!5, colframe=darkcolor, fonttitle=\ttfamily]
+    npm install
+    \end{tcolorbox}
+    
+    \item Créer le fichier \texttt{.env} :
+    \begin{tcolorbox}[colback=darkcolor!5, colframe=darkcolor, fonttitle=\ttfamily]
+    VITE\_API\_URL=http://localhost:5000/api
+    \end{tcolorbox}
+    
+    \item Démarrer le serveur frontend :
+    \begin{tcolorbox}[colback=darkcolor!5, colframe=darkcolor, fonttitle=\ttfamily]
+    npm run dev
+    \end{tcolorbox}
+\end{enumerate}
+
+\subsection{Accès à la Plateforme}
+
+Une fois l'installation terminée, accédez à :
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Frontend} : \url{http://localhost:3000}
+    \item \textbf{Backend API} : \url{http://localhost:5000}
+\end{itemize}
+
+% ===================================
+% SECTION 3: IDENTIFIANTS
+% ===================================
+\newpage
+\section{Identifiants de Connexion}
+
+\begin{credentialbox}
+\Large
+\textbf{Email :} \texttt{admin@talentsafricains.com}\\[0.3cm]
+\textbf{Mot de passe :} \texttt{Password123!}\\[0.5cm]
+
+\normalsize
+\textcolor{red}{\faExclamationTriangle\ \textbf{IMPORTANT :} Changez ce mot de passe après la première connexion pour des raisons de sécurité !}
+\end{credentialbox}
+
+\subsection{Comptes de Test}
+
+Pour tester les fonctionnalités utilisateur standard :
+
+\begin{tcolorbox}[colback=lightgray, colframe=secondarycolor]
+\textbf{Porteur de projet 1}\\
+Email : \texttt{amina.diallo@example.com}\\
+Mot de passe : \texttt{Password123!}\\[0.3cm]
+
+\textbf{Porteur de projet 2}\\
+Email : \texttt{kwame.mensah@example.com}\\
+Mot de passe : \texttt{Password123!}\\[0.3cm]
+
+\textbf{Visiteur}\\
+Email : \texttt{fatou.kone@example.com}\\
+Mot de passe : \texttt{Password123!}
+\end{tcolorbox}
+
+% ===================================
+% SECTION 4: GUIDE UTILISATEUR
+% ===================================
+\newpage
+\section{Guide Utilisateur}
+
+\subsection{Page d'Accueil}
+
+La page d'accueil présente :
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Statistiques en temps réel} : Nombre de projets, porteurs, visiteurs et commentaires
+    \item \textbf{Projets populaires} : Les projets les plus likés
+    \item \textbf{Projets récents} : Les dernières publications
+    \item \textbf{Catégories} : Navigation rapide par domaine
+\end{itemize}
+
+\subsection{Inscription et Connexion}
+
+\subsubsection{S'inscrire}
+\begin{enumerate}[leftmargin=*]
+    \item Cliquer sur \textbf{« Connexion »} dans le menu
+    \item Sélectionner l'onglet \textbf{« S'inscrire »}
+    \item Remplir le formulaire :
+    \begin{itemize}
+        \item Prénom et Nom
+        \item Email (unique)
+        \item Mot de passe (minimum 6 caractères)
+        \item Téléphone et Localisation
+        \item Biographie
+        \item Choisir le rôle : Porteur de projet ou Visiteur
+    \end{itemize}
+    \item Cliquer sur \textbf{« S'inscrire »}
+\end{enumerate}
+
+\subsubsection{Se connecter}
+\begin{enumerate}[leftmargin=*]
+    \item Cliquer sur \textbf{« Connexion »}
+    \item Entrer votre email et mot de passe
+    \item Cliquer sur \textbf{« Se connecter »}
+\end{enumerate}
+
+\subsection{Découvrir les Projets}
+
+\subsubsection{Navigation}
+\begin{itemize}[leftmargin=*]
+    \item Accéder à la page \textbf{« Découvrir »} depuis le menu
+    \item Utiliser la barre de recherche pour trouver des projets
+    \item Filtrer par :
+    \begin{itemize}
+        \item Catégorie (Technologie, Art, Entrepreneuriat, etc.)
+        \item Localisation
+        \item Tri (Récent, Populaire, Ancien)
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Consulter un Projet}
+\begin{itemize}[leftmargin=*]
+    \item Cliquer sur une carte projet
+    \item Consulter les détails : description, images, auteur
+    \item Voir les statistiques : likes, commentaires, vues
+    \item Liker le projet (\faHeart)
+    \item Laisser un commentaire
+\end{itemize}
+
+\subsection{Publier un Projet}
+
+\begin{warningbox}{\faInfoCircle\ Prérequis}
+Vous devez être connecté avec un compte \textbf{Porteur de projet} pour publier.
+\end{warningbox}
+
+\subsubsection{Étapes de publication}
+\begin{enumerate}[leftmargin=*]
+    \item Cliquer sur \textbf{« Ajouter un Projet »} dans le menu
+    \item Remplir le formulaire :
+    \begin{itemize}
+        \item \textbf{Titre} : Nom du projet (obligatoire)
+        \item \textbf{Description} : Présentation détaillée
+        \item \textbf{Catégorie} : Choisir parmi 8 catégories
+        \item \textbf{Localisation} : Pays/Ville
+        \item \textbf{Lien externe} : URL du projet (optionnel)
+        \item \textbf{Image principale} : Photo de couverture (JPG, PNG)
+        \item \textbf{Galerie} : Jusqu'à 5 images supplémentaires
+    \end{itemize}
+    \item Cliquer sur \textbf{« Publier le Projet »}
+\end{enumerate}
+
+\subsection{Gérer son Profil}
+
+\subsubsection{Accéder au profil}
+\begin{itemize}[leftmargin=*]
+    \item Cliquer sur \textbf{« Mon profil »} dans le menu
+    \item Consulter vos informations
+    \item Voir la liste de vos projets publiés
+\end{itemize}
+
+\subsubsection{Modifier le profil}
+\begin{itemize}[leftmargin=*]
+    \item Cliquer sur \textbf{« Modifier le Profil »}
+    \item Mettre à jour :
+    \begin{itemize}
+        \item Photo de profil
+        \item Prénom, Nom
+        \item Téléphone, Localisation
+        \item Biographie
+        \item Mot de passe (optionnel)
+    \end{itemize}
+    \item Cliquer sur \textbf{« Enregistrer les Modifications »}
+\end{itemize}
+
+\subsubsection{Gérer ses projets}
+\begin{itemize}[leftmargin=*]
+    \item Voir tous vos projets dans l'onglet \textbf{« Mes Projets »}
+    \item Modifier un projet (titre, description, images)
+    \item Supprimer un projet (action irréversible)
+\end{itemize}
+
+% ===================================
+% SECTION 5: PANEL ADMINISTRATEUR
+% ===================================
+\newpage
+\section{Panel Administrateur}
+
+\subsection{Accès au Dashboard}
+
+\begin{enumerate}[leftmargin=*]
+    \item Se connecter avec le compte administrateur
+    \item Cliquer sur \textbf{« \faUserShield\ Dashboard Admin »} dans le menu
+\end{enumerate}
+
+\subsection{Vue d'ensemble}
+
+Le tableau de bord affiche :
+
+\begin{tcolorbox}[colback=primarycolor!10, colframe=primarycolor, title=\faChartLine\ Statistiques Globales]
+\begin{itemize}[leftmargin=*]
+    \item Nombre total de projets publiés
+    \item Nombre d'utilisateurs inscrits
+    \item Nombre de commentaires
+    \item Nombre de likes
+\end{itemize}
+\end{tcolorbox}
+
+\subsection{Gestion des Projets}
+
+\subsubsection{Tableau des projets}
+\begin{itemize}[leftmargin=*]
+    \item Liste complète de tous les projets
+    \item Informations affichées :
+    \begin{itemize}
+        \item Titre et auteur
+        \item Catégorie et localisation
+        \item Date de publication
+        \item Statistiques (likes, vues, commentaires)
+        \item Statut (Publié, En attente, Rejeté)
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Actions disponibles}
+\begin{itemize}[leftmargin=*]
+    \item \textbf{\faEye\ Voir} : Consulter le projet en détail
+    \item \textbf{\faEdit\ Modifier} : Éditer le contenu
+    \item \textbf{\faTrash\ Supprimer} : Retirer définitivement
+    \item \textbf{\faCheck\ Approuver} : Valider la publication
+    \item \textbf{\faTimes\ Rejeter} : Refuser le projet
+\end{itemize}
+
+\subsection{Gestion des Utilisateurs}
+
+\subsubsection{Tableau des utilisateurs}
+\begin{itemize}[leftmargin=*]
+    \item Liste de tous les comptes
+    \item Informations affichées :
+    \begin{itemize}
+        \item Nom complet
+        \item Email et téléphone
+        \item Rôle (Admin, Porteur, Visiteur)
+        \item Localisation
+        \item Date d'inscription
+        \item Nombre de projets publiés
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Actions disponibles}
+\begin{itemize}[leftmargin=*]
+    \item \textbf{\faEye\ Voir profil} : Consulter le profil complet
+    \item \textbf{\faUserShield\ Changer rôle} : Modifier les permissions
+    \item \textbf{\faBan\ Suspendre} : Désactiver temporairement le compte
+    \item \textbf{\faTrash\ Supprimer} : Supprimer définitivement l'utilisateur
+\end{itemize}
+
+\subsection{Modération des Commentaires}
+
+\begin{itemize}[leftmargin=*]
+    \item Consulter tous les commentaires publiés
+    \item Supprimer les commentaires inappropriés
+    \item Bloquer les utilisateurs abusifs
+    \item Voir l'historique des interactions
+\end{itemize}
+
+\subsection{Rapports et Statistiques}
+
+\subsubsection{Rapports disponibles}
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Évolution des inscriptions} : Graphique temporel
+    \item \textbf{Projets par catégorie} : Répartition
+    \item \textbf{Projets les plus populaires} : Top 10
+    \item \textbf{Utilisateurs les plus actifs} : Classement
+    \item \textbf{Activité quotidienne} : Likes et commentaires
+\end{itemize}
+
+\subsubsection{Export de données}
+\begin{itemize}[leftmargin=*]
+    \item Exporter la liste des utilisateurs (CSV)
+    \item Exporter la liste des projets (CSV)
+    \item Générer des rapports PDF
+\end{itemize}
+
+% ===================================
+% SECTION 6: FONCTIONNALITÉS AVANCÉES
+% ===================================
+\newpage
+\section{Fonctionnalités Avancées}
+
+\subsection{Système de Likes}
+
+\begin{itemize}[leftmargin=*]
+    \item Un utilisateur peut liker un projet une seule fois
+    \item Le like peut être retiré en cliquant à nouveau
+    \item Le compteur de likes est mis à jour en temps réel
+    \item Les projets sont classés par popularité basée sur les likes
+\end{itemize}
+
+\subsection{Système de Commentaires}
+
+\subsubsection{Publier un commentaire}
+\begin{enumerate}[leftmargin=*]
+    \item Ouvrir un projet
+    \item Faire défiler jusqu'à la section commentaires
+    \item Écrire votre commentaire dans la zone de texte
+    \item Cliquer sur \textbf{« Publier »}
+\end{enumerate}
+
+\subsubsection{Modération}
+\begin{itemize}[leftmargin=*]
+    \item Les utilisateurs peuvent supprimer leurs propres commentaires
+    \item Les administrateurs peuvent supprimer tous les commentaires
+    \item Les commentaires sont horodatés
+\end{itemize}
+
+\subsection{Upload de Fichiers}
+
+\begin{infobox}{Formats Acceptés}
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Images} : JPG, JPEG, PNG, GIF
+    \item \textbf{Taille maximale} : 5 MB par image
+    \item \textbf{Galerie} : Jusqu'à 5 images par projet
+\end{itemize}
+\end{infobox}
+
+\subsection{Recherche et Filtres}
+
+\subsubsection{Recherche par mots-clés}
+\begin{itemize}[leftmargin=*]
+    \item Recherche dans les titres
+    \item Recherche dans les descriptions
+    \item Recherche insensible à la casse
+    \item Résultats mis en surbrillance
+\end{itemize}
+
+\subsubsection{Filtres disponibles}
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Catégorie} : 8 catégories disponibles
+    \item \textbf{Localisation} : Par pays ou ville
+    \item \textbf{Tri} :
+    \begin{itemize}
+        \item Plus récents
+        \item Plus populaires (par likes)
+        \item Plus anciens
+    \end{itemize}
+\end{itemize}
+
+\subsection{Notifications}
+
+\begin{itemize}[leftmargin=*]
+    \item Notification lors d'un nouveau like sur votre projet
+    \item Notification lors d'un nouveau commentaire
+    \item Notification d'approbation/rejet par l'admin
+    \item Notification de modification de compte
+\end{itemize}
+
+% ===================================
+% SECTION 7: SÉCURITÉ
+% ===================================
+\newpage
+\section{Sécurité et Confidentialité}
+
+\subsection{Authentification}
+
+\begin{tcolorbox}[colback=blue!5, colframe=blue!60, title=\faLock\ Mesures de Sécurité]
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Hachage des mots de passe} : bcrypt avec salt de 10 rounds
+    \item \textbf{Tokens JWT} : Expiration après 24 heures
+    \item \textbf{Protection CSRF} : Tokens anti-falsification
+    \item \textbf{Validation des entrées} : Sanitization côté serveur
+    \item \textbf{HTTPS recommandé} : Pour le déploiement en production
+\end{itemize}
+\end{tcolorbox}
+
+\subsection{Permissions et Rôles}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{Action} & \textbf{Visiteur} & \textbf{Porteur} & \textbf{Admin} \\ \hline
+Voir les projets & \checkmark & \checkmark & \checkmark \\ \hline
+Liker/Commenter & \checkmark & \checkmark & \checkmark \\ \hline
+Publier un projet & \texttimes & \checkmark & \checkmark \\ \hline
+Modifier ses projets & \texttimes & \checkmark & \checkmark \\ \hline
+Gérer les utilisateurs & \texttimes & \texttimes & \checkmark \\ \hline
+Modérer le contenu & \texttimes & \texttimes & \checkmark \\ \hline
+Accès au dashboard & \texttimes & \texttimes & \checkmark \\ \hline
+\end{tabular}
+\caption{Matrice des permissions par rôle}
+\end{table}
+
+\subsection{Protection des Données}
+
+\begin{itemize}[leftmargin=*]
+    \item Les mots de passe ne sont jamais stockés en clair
+    \item Les emails sont validés et uniques
+    \item Les uploads sont vérifiés (type MIME, taille)
+    \item Les injections SQL sont prévenues (prepared statements)
+    \item Les XSS sont neutralisées (échappement HTML)
+\end{itemize}
+
+\subsection{Bonnes Pratiques}
+
+\begin{warningbox}{\faExclamationTriangle\ Recommandations}
+\begin{itemize}[leftmargin=*]
+    \item Changer le mot de passe administrateur par défaut
+    \item Utiliser des mots de passe complexes (min. 12 caractères)
+    \item Activer HTTPS en production
+    \item Faire des sauvegardes régulières de la base de données
+    \item Mettre à jour régulièrement les dépendances npm
+    \item Surveiller les logs pour détecter les activités suspectes
+\end{itemize}
+\end{warningbox}
+
+% ===================================
+% SECTION 8: MAINTENANCE
+% ===================================
+\newpage
+\section{Maintenance et Support}
+
+\subsection{Sauvegardes}
+
+\subsubsection{Sauvegarde de la base de données}
+\begin{tcolorbox}[colback=darkcolor!5, colframe=darkcolor, fonttitle=\ttfamily]
+mysqldump -u root -p talentsafricains > backup\_\$(date +\%Y\%m\%d).sql
+\end{tcolorbox}
+
+\subsubsection{Restauration}
+\begin{tcolorbox}[colback=darkcolor!5, colframe=darkcolor, fonttitle=\ttfamily]
+mysql -u root -p talentsafricains < backup\_20250131.sql
+\end{tcolorbox}
+
+\subsection{Mises à Jour}
+
+\subsubsection{Backend}
+\begin{tcolorbox}[colback=darkcolor!5, colframe=darkcolor, fonttitle=\ttfamily]
+cd backend\\
+npm update\\
+npm audit fix
+\end{tcolorbox}
+
+\subsubsection{Frontend}
+\begin{tcolorbox}[colback=darkcolor!5, colframe=darkcolor, fonttitle=\ttfamily]
+cd frontend\\
+npm update\\
+npm audit fix
+\end{tcolorbox}
+
+\subsection{Logs et Débogage}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Logs Backend} : Consultez la console du terminal backend
+    \item \textbf{Logs Frontend} : Utilisez la console du navigateur (F12)
+    \item \textbf{Logs MySQL} : Consultez les logs d'erreur MySQL
+    \item \textbf{Mode développement} : Activez le mode verbose pour plus de détails
+\end{itemize}
+
+\subsection{Problèmes Courants}
+
+\subsubsection{Le serveur ne démarre pas}
+\begin{itemize}[leftmargin=*]
+    \item Vérifiez que MySQL est démarré
+    \item Vérifiez les identifiants dans le fichier \texttt{.env}
+    \item Assurez-vous que le port 5000 n'est pas déjà utilisé
+    \item Vérifiez les logs pour identifier l'erreur
+\end{itemize}
+
+\subsubsection{Les images ne s'affichent pas}
+\begin{itemize}[leftmargin=*]
+    \item Vérifiez que le dossier \texttt{uploads/} existe
+    \item Vérifiez les permissions du dossier (lecture/écriture)
+    \item Vérifiez l'URL de l'API dans le fichier \texttt{.env}
+\end{itemize}
+
+\subsubsection{Impossible de se connecter}
+\begin{itemize}[leftmargin=*]
+    \item Vérifiez que l'email et le mot de passe sont corrects
+    \item Vérifiez que le compte n'est pas suspendu
+    \item Effacez le cache du navigateur
+    \item Vérifiez que le backend est accessible
+\end{itemize}
+
+% ===================================
+% SECTION 9: DÉPLOIEMENT
+% ===================================
+\newpage
+\section{Déploiement en Production}
+
+\subsection{Configuration Serveur}
+
+\subsubsection{Serveur recommandé}
+\begin{itemize}[leftmargin=*]
+    \item \textbf{OS} : Ubuntu 20.04 LTS ou supérieur
+    \item \textbf{RAM} : Minimum 2 GB (4 GB recommandé)
+    \item \textbf{CPU} : 2 vCPU minimum
+    \item \textbf{Disque} : 20 GB SSD minimum
+    \item \textbf{Node.js} : Version 18.x ou 20.x
+    \item \textbf{MySQL} : Version 8.0
+\end{itemize}
+
+\subsection{Configuration Nginx}
+
+Exemple de configuration pour Nginx :
+
+\begin{tcolorbox}[colback=darkcolor!5, colframe=darkcolor, fonttitle=\ttfamily, fontsize=\small]
+server \{\\
+\quad listen 80;\\
+\quad server\_name talentsafricains.com;\\
+\\
+\quad location / \{\\
+\quad\quad proxy\_pass http://localhost:3000;\\
+\quad\quad proxy\_http\_version 1.1;\\
+\quad\quad proxy\_set\_header Upgrade \$http\_upgrade;\\
+\quad\quad proxy\_set\_header Connection 'upgrade';\\
+\quad\quad proxy\_set\_header Host \$host;\\
+\quad\quad proxy\_cache\_bypass \$http\_upgrade;\\
+\quad \}\\
+\\
+\quad location /api \{\\
+\quad\quad proxy\_pass http://localhost:5000;\\
+\quad \}\\
+\}
+\end{tcolorbox}
+
+\subsection{Process Manager (PM2)}
+
+Pour maintenir le backend en ligne :
+
+\begin{tcolorbox}[colback=darkcolor!5, colframe=darkcolor, fonttitle=\ttfamily]
+npm install -g pm2\\
+pm2 start src/server.js --name talentsafricains-api\\
+pm2 save\\
+pm2 startup
+\end{tcolorbox}
+
+\subsection{Variables d'Environnement Production}
+
+\begin{tcolorbox}[colback=yellow!10, colframe=orange, fonttitle=\ttfamily, fontsize=\small]
+NODE\_ENV=production\\
+DB\_HOST=localhost\\
+DB\_USER=talentsafricains\\
+DB\_PASSWORD=mot\_de\_passe\_securise\\
+DB\_NAME=talentsafricains\\
+JWT\_SECRET=secret\_tres\_securise\_aleatoire\\
+PORT=5000\\
+FRONTEND\_URL=https://talentsafricains.com
+\end{tcolorbox}
+
+% ===================================
+% SECTION 10: SUPPORT
+% ===================================
+\newpage
+\section{Support et Contact}
+
+\subsection{Documentation}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{README.md} : Instructions rapides d'installation
+    \item \textbf{QUICKSTART.md} : Guide de démarrage rapide
+    \item \textbf{ADMIN\_CREDENTIALS.md} : Identifiants administrateur
+    \item \textbf{Ce manuel} : Documentation complète
+\end{itemize}
+
+\subsection{Dépôt GitHub}
+
+\begin{tcolorbox}[colback=primarycolor!10, colframe=primarycolor]
+\centering
+\faGithub\ \url{https://github.com/OUEDRAOGOFred/-TalentsAfricains}
+\end{tcolorbox}
+
+\subsection{Contact Développeur}
+
+Pour toute question technique ou demande de support :
+
+\begin{tcolorbox}[colback=secondarycolor!10, colframe=secondarycolor, title=\faUser\ Développeur]
+\textbf{Nom :} Freddy OUEDRAOGO\\
+\textbf{Email :} contact@freddyouedraogo.dev\\
+\textbf{GitHub :} @OUEDRAOGOFred
+\end{tcolorbox}
+
+\subsection{Licence et Utilisation}
+
+Cette plateforme a été développée dans un cadre professionnel. Tous droits réservés.
+
+\begin{itemize}[leftmargin=*]
+    \item Utilisation autorisée pour le client
+    \item Modification et personnalisation permises
+    \item Redistribution non autorisée sans accord préalable
+\end{itemize}
+
+% ===================================
+% ANNEXES
+% ===================================
+\newpage
+\section*{Annexes}
+\addcontentsline{toc}{section}{Annexes}
+
+\subsection*{Annexe A : Catégories de Projets}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|l|}
+\hline
+\textbf{Catégorie} & \textbf{Description} \\ \hline
+Technologie & Applications, logiciels, IA, blockchain \\ \hline
+Art & Peinture, sculpture, photographie, design \\ \hline
+Entrepreneuriat & Startups, business plans, innovations \\ \hline
+Innovation & Inventions, solutions nouvelles \\ \hline
+Éducation & Plateformes d'apprentissage, formations \\ \hline
+Santé & Applications médicales, bien-être \\ \hline
+Agriculture & AgriTech, solutions agricoles \\ \hline
+Autre & Projets divers non catégorisés \\ \hline
+\end{tabular}
+\caption{Liste des catégories disponibles}
+\end{table}
+
+\subsection*{Annexe B : Structure de la Base de Données}
+
+\textbf{Tables principales :}
+
+\begin{itemize}[leftmargin=*]
+    \item \texttt{users} : Comptes utilisateurs
+    \item \texttt{projects} : Projets publiés
+    \item \texttt{comments} : Commentaires sur les projets
+    \item \texttt{likes} : Likes des utilisateurs
+\end{itemize}
+
+\subsection*{Annexe C : API Endpoints}
+
+\textbf{Authentification :}
+\begin{itemize}[leftmargin=*]
+    \item \texttt{POST /api/auth/register} : Inscription
+    \item \texttt{POST /api/auth/login} : Connexion
+    \item \texttt{GET /api/auth/me} : Profil actuel
+\end{itemize}
+
+\textbf{Projets :}
+\begin{itemize}[leftmargin=*]
+    \item \texttt{GET /api/projects} : Liste des projets
+    \item \texttt{GET /api/projects/:id} : Détails d'un projet
+    \item \texttt{POST /api/projects} : Créer un projet
+    \item \texttt{PUT /api/projects/:id} : Modifier un projet
+    \item \texttt{DELETE /api/projects/:id} : Supprimer un projet
+\end{itemize}
+
+\textbf{Interactions :}
+\begin{itemize}[leftmargin=*]
+    \item \texttt{POST /api/likes/:projectId} : Liker/Unliker
+    \item \texttt{POST /api/comments/:projectId} : Commenter
+    \item \texttt{DELETE /api/comments/:id} : Supprimer un commentaire
+\end{itemize}
+
+\textbf{Administration :}
+\begin{itemize}[leftmargin=*]
+    \item \texttt{GET /api/admin/statistics} : Statistiques globales
+    \item \texttt{GET /api/admin/users} : Liste des utilisateurs
+    \item \texttt{GET /api/admin/projects} : Tous les projets
+    \item \texttt{PUT /api/admin/users/:id/role} : Changer le rôle
+\end{itemize}
+
+% ===================================
+% PAGE FINALE
+% ===================================
+\newpage
+\begin{center}
+\vspace*{5cm}
+
+{\Huge\bfseries\color{primarycolor} TalentsAfricains\par}
+
+\vspace{1cm}
+
+{\Large Plateforme Professionnelle de Mise en Valeur\par}
+{\Large des Talents Africains\par}
+
+\vspace{2cm}
+
+\begin{tcolorbox}[colback=secondarycolor!20, colframe=secondarycolor, width=0.8\textwidth, arc=5mm]
+\centering
+\Large\textbf{Version 1.0}\\[0.5cm]
+\normalsize
+Manuel d'Utilisation Complet\\
+Installation • Configuration • Utilisation\\
+Administration • Maintenance
+\end{tcolorbox}
+
+\vspace{3cm}
+
+{\large\bfseries Développé par\par}
+\vspace{0.3cm}
+{\LARGE\bfseries\color{primarycolor} Freddy OUEDRAOGO\par}
+
+\vspace{1cm}
+
+{\normalsize © 2025 - Tous droits réservés\par}
+{\small Documentation mise à jour le \today\par}
+
+\end{center}
+
+\end{document}
