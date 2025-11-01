@@ -10,12 +10,12 @@ class Project {
    * Créer un nouveau projet
    */
   static async create(projectData) {
-    const { titre, description, categorie, localisation, lien_externe, image_principale, galerie_images, user_id } = projectData;
+    const { titre, description, categorie, localisation, lien_demo, lien_github, image_principale, galerie_images, user_id } = projectData;
     
     const [result] = await db.execute(
-      `INSERT INTO projects (titre, description, categorie, localisation, lien_externe, image_principale, galerie_images, user_id) 
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?) RETURNING id`,
-      [titre, description, categorie, localisation, lien_externe, image_principale, galerie_images, user_id]
+      `INSERT INTO projects (titre, description, categorie, localisation, lien_demo, lien_github, image_principale, galerie_images, user_id) 
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id`,
+      [titre, description, categorie, localisation, lien_demo, lien_github, image_principale, galerie_images, user_id]
     );
     
     // PostgreSQL retourne un tableau avec les lignes insérées
