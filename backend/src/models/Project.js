@@ -14,11 +14,12 @@ class Project {
     
     const [result] = await db.execute(
       `INSERT INTO projects (titre, description, categorie, localisation, lien_externe, image_principale, galerie_images, user_id) 
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?) RETURNING id`,
       [titre, description, categorie, localisation, lien_externe, image_principale, galerie_images, user_id]
     );
     
-    return result.insertId;
+    // PostgreSQL retourne un tableau avec les lignes insérées
+    return result[0].id;
   }
 
   /**

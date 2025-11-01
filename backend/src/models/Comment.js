@@ -10,11 +10,12 @@ class Comment {
    */
   static async create(projectId, userId, content) {
     const [result] = await db.execute(
-      'INSERT INTO comments (project_id, user_id, content) VALUES (?, ?, ?)',
+      'INSERT INTO comments (project_id, user_id, content) VALUES (?, ?, ?) RETURNING id',
       [projectId, userId, content]
     );
     
-    return result.insertId;
+    // PostgreSQL retourne un tableau avec les lignes insérées
+    return result[0].id;
   }
 
   /**

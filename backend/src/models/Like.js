@@ -11,14 +11,16 @@ class Like {
   static async add(userId, projectId) {
     try {
       const [result] = await db.execute(
-        'INSERT INTO likes (user_id, project_id) VALUES (?, ?)',
+        'INSERT INTO likes (user_id, project_id) VALUES (?, ?) RETURNING id',
         [userId, projectId]
       );
       
-      return result.insertId;
+      // PostgreSQL retourne un tableau avec les lignes insérées
+      return result[0].id;
     } catch (error) {
       // Si le like existe déjà (duplicate key), on retourne null
-      if (error.code === 'ER_DUP_ENTRY') {
+      // PostgreSQL utilise le code '23505' pour les violations d'unicité
+      if (error.code === 'ER_DUP_ENTRY' || error.code === '23505') {
         return null;
       }
       throw error;

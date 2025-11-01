@@ -10,15 +10,16 @@ class User {
    * Créer un nouvel utilisateur
    */
   static async create(userData) {
-    const { first_name, last_name, email, password, role, bio, competences, pays } = userData;
+    const { first_name, last_name, email, password, role, bio } = userData;
     
     const [result] = await db.execute(
-      `INSERT INTO users (first_name, last_name, email, password, role, bio, competences, pays) 
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-      [first_name, last_name, email, password, role || 'visiteur', bio, competences, pays]
+      `INSERT INTO users (first_name, last_name, email, password, role, bio) 
+       VALUES (?, ?, ?, ?, ?, ?) RETURNING id`,
+      [first_name, last_name, email, password, role || 'user', bio]
     );
     
-    return result.insertId;
+    // PostgreSQL retourne un tableau avec les lignes insérées
+    return result[0].id;
   }
 
   /**
