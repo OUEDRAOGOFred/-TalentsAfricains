@@ -59,7 +59,7 @@ class Project {
 
     // Tri
     if (filters.sort === 'popular') {
-      query += ' ORDER BY likes_count DESC, p.views_count DESC';
+      query += ' ORDER BY likes_count DESC, p.views DESC';
     } else if (filters.sort === 'oldest') {
       query += ' ORDER BY p.created_at ASC';
     } else {
@@ -174,7 +174,7 @@ class Project {
    */
   static async incrementViews(id) {
     await db.execute(
-      'UPDATE projects SET views_count = views_count + 1 WHERE id = ?',
+      'UPDATE projects SET views = views + 1 WHERE id = ?',
       [id]
     );
   }
