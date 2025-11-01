@@ -46,6 +46,7 @@ class ProjectController {
         lien_externe,
         image_principale,
         galerie_images,
+        statut: 'publie', // Publier automatiquement le projet
         user_id: req.user.id
       });
 
