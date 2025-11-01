@@ -112,6 +112,11 @@ class ProjectController {
   static async getById(req, res) {
     try {
       const { id } = req.params;
+      
+      // Incrémenter les vues d'abord
+      await Project.incrementViews(id);
+      
+      // Puis récupérer le projet avec les vues mises à jour
       const project = await Project.findById(id);
 
       if (!project) {
@@ -120,9 +125,6 @@ class ProjectController {
           message: 'Projet non trouvé' 
         });
       }
-
-      // Incrémenter les vues
-      await Project.incrementViews(id);
 
       // Vérifier si l'utilisateur connecté a liké le projet
       let hasLiked = false;
