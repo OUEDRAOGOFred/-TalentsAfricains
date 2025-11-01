@@ -48,7 +48,7 @@ exports.getStatistics = async (req, res) => {
       LEFT JOIN projects p ON u.id = p.user_id
       LEFT JOIN likes l ON u.id = l.user_id
       LEFT JOIN comments c ON u.id = c.user_id
-      GROUP BY u.id
+      GROUP BY u.id, u.first_name, u.last_name, u.email, u.role
       ORDER BY (COUNT(DISTINCT p.id) + COUNT(DISTINCT l.id) + COUNT(DISTINCT c.id)) DESC
       LIMIT 10
     `);
@@ -66,7 +66,7 @@ exports.getStatistics = async (req, res) => {
       LEFT JOIN users u ON p.user_id = u.id
       LEFT JOIN likes l ON p.id = l.project_id
       LEFT JOIN comments c ON p.id = c.project_id
-      GROUP BY p.id
+      GROUP BY p.id, p.titre, u.first_name, u.last_name
       ORDER BY (COUNT(DISTINCT l.id) + COUNT(DISTINCT c.id)) DESC
       LIMIT 10
     `);
@@ -77,13 +77,13 @@ exports.getStatistics = async (req, res) => {
         DATE(created_at) as date,
         COUNT(*) as count
       FROM (
-        SELECT created_at FROM users WHERE created_at >= DATE_SUB(NOW(), INTERVAL 30 DAY)
+        SELECT created_at FROM users WHERE created_at >= CURRENT_DATE - INTERVAL '30 days'
         UNION ALL
-        SELECT created_at FROM projects WHERE created_at >= DATE_SUB(NOW(), INTERVAL 30 DAY)
+        SELECT created_at FROM projects WHERE created_at >= CURRENT_DATE - INTERVAL '30 days'
         UNION ALL
-        SELECT created_at FROM likes WHERE created_at >= DATE_SUB(NOW(), INTERVAL 30 DAY)
+        SELECT created_at FROM likes WHERE created_at >= CURRENT_DATE - INTERVAL '30 days'
         UNION ALL
-        SELECT created_at FROM comments WHERE created_at >= DATE_SUB(NOW(), INTERVAL 30 DAY)
+        SELECT created_at FROM comments WHERE created_at >= CURRENT_DATE - INTERVAL '30 days'
       ) as activity
       GROUP BY DATE(created_at)
       ORDER BY date DESC
