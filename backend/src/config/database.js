@@ -5,6 +5,13 @@
 
 require('dotenv').config();
 
+// Fonction helper pour convertir les requêtes MySQL en PostgreSQL
+function convertQueryToPostgres(query, params) {
+  let paramIndex = 1;
+  const convertedQuery = query.replace(/\?/g, () => `$${paramIndex++}`);
+  return convertedQuery;
+}
+
 // En production (Render), utiliser PostgreSQL (Supabase)
 if (process.env.USE_SUPABASE === 'true' || process.env.NODE_ENV === 'production') {
   const { Pool } = require('pg');
@@ -34,11 +41,13 @@ if (process.env.USE_SUPABASE === 'true' || process.env.NODE_ENV === 'production'
   // Adapter pour utiliser la même interface que MySQL
   const promisePool = {
     query: async (text, params) => {
-      const result = await pool.query(text, params);
+      const convertedQuery = convertQueryToPostgres(text, params);
+      const result = await pool.query(convertedQuery, params);
       return [result.rows];
     },
     execute: async (text, params) => {
-      const result = await pool.query(text, params);
+      const convertedQuery = convertQueryToPostgres(text, params);
+      const result = await pool.query(convertedQuery, params);
       return [result.rows];
     }
   };
