@@ -34,7 +34,7 @@ class Project {
       LEFT JOIN users u ON p.user_id = u.id
       LEFT JOIN likes l ON p.id = l.project_id
       LEFT JOIN comments c ON p.id = c.project_id
-      WHERE p.status = 'publie'
+      WHERE p.statut = 'publie'
     `;
     
     const params = [];
@@ -79,7 +79,7 @@ class Project {
    * Compter le nombre total de projets (pour pagination)
    */
   static async count(filters = {}) {
-    let query = 'SELECT COUNT(*) as total FROM projects WHERE status = "publie"';
+    let query = 'SELECT COUNT(*) as total FROM projects WHERE statut = "publie"';
     const params = [];
 
     if (filters.categorie) {
