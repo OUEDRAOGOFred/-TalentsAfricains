@@ -55,7 +55,7 @@ class Project {
       params.push(`%${filters.search}%`, `%${filters.search}%`);
     }
 
-    query += ' GROUP BY p.id';
+    query += ' GROUP BY p.id, u.first_name, u.last_name, u.photo_profil';
 
     // Tri
     if (filters.sort === 'popular') {
