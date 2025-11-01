@@ -79,7 +79,7 @@ class Project {
    * Compter le nombre total de projets (pour pagination)
    */
   static async count(filters = {}) {
-    let query = 'SELECT COUNT(*) as total FROM projects WHERE statut = "publie"';
+    let query = "SELECT COUNT(*) as total FROM projects WHERE statut = 'publie'";
     const params = [];
 
     if (filters.categorie) {
