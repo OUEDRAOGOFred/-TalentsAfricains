@@ -28,6 +28,7 @@ class Project {
   static async getAll(filters = {}) {
     let query = `
       SELECT p.*, 
+             p.views as views_count,
              u.first_name, u.last_name, u.photo_profil as author_photo,
              COUNT(DISTINCT l.id) as likes_count,
              COUNT(DISTINCT c.id) as comments_count
@@ -56,7 +57,7 @@ class Project {
       params.push(`%${filters.search}%`, `%${filters.search}%`);
     }
 
-    query += ' GROUP BY p.id, u.first_name, u.last_name, u.photo_profil';
+    query += ' GROUP BY p.id, u.id, u.first_name, u.last_name, u.photo_profil';
 
     // Tri
     if (filters.sort === 'popular') {
@@ -107,7 +108,8 @@ class Project {
    */
   static async findById(id) {
     const [rows] = await db.execute(
-      `SELECT p.*, 
+      `SELECT p.*,
+              p.views as views_count,
               u.id as author_id, u.first_name, u.last_name, u.email as user_email, u.bio, u.photo_profil as author_photo, 
               u.linkedin, u.twitter, u.website,
               (SELECT COUNT(*) FROM likes WHERE project_id = p.id) as likes_count,
@@ -130,6 +132,7 @@ class Project {
     
     const [rows] = await db.execute(
       `SELECT p.*,
+              p.views as views_count,
               (SELECT COUNT(*) FROM likes WHERE project_id = p.id) as likes_count,
               (SELECT COUNT(*) FROM comments WHERE project_id = p.id) as comments_count
        FROM projects p
