@@ -20,7 +20,7 @@ exports.getStatistics = async (req, res) => {
 
     // Projets par statut
     const [projectsByStatus] = await db.execute(
-      'SELECT status, COUNT(*) as count FROM projects GROUP BY status'
+      'SELECT statut, COUNT(*) as count FROM projects GROUP BY statut'
     );
 
     // Nombre total de likes
@@ -129,8 +129,6 @@ exports.getAllUsers = async (req, res) => {
         u.email,
         u.role,
         u.bio,
-        u.competences,
-        u.pays,
         u.created_at,
         COUNT(DISTINCT p.id) as projects_count,
         COUNT(DISTINCT l.id) as likes_given,
@@ -139,7 +137,7 @@ exports.getAllUsers = async (req, res) => {
       LEFT JOIN projects p ON u.id = p.user_id
       LEFT JOIN likes l ON u.id = l.user_id
       LEFT JOIN comments c ON u.id = c.user_id
-      GROUP BY u.id
+      GROUP BY u.id, u.first_name, u.last_name, u.email, u.role, u.bio, u.created_at
       ORDER BY u.created_at DESC
     `);
 
@@ -171,7 +169,7 @@ exports.getAllProjects = async (req, res) => {
       LEFT JOIN users u ON p.user_id = u.id
       LEFT JOIN likes l ON p.id = l.project_id
       LEFT JOIN comments c ON p.id = c.project_id
-      GROUP BY p.id
+      GROUP BY p.id, u.first_name, u.last_name, u.email
       ORDER BY p.created_at DESC
     `);
 
