@@ -4,6 +4,7 @@
 
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { Search } from 'lucide-react';
 import ProjectCard from '../components/ProjectCard';
 import projectService from '../services/projectService';
 import './Discover.css';
@@ -78,7 +79,7 @@ const Discover = () => {
                 onChange={(e) => handleFilterChange('search', e.target.value)}
               />
               <button className="search-btn">
-                🔍
+                <Search size={20} />
               </button>
             </div>
 
@@ -155,7 +156,7 @@ const Discover = () => {
               </div>
             ) : (
               <div className="empty-state">
-                <div className="empty-icon">🔍</div>
+                <div className="empty-icon"><Search size={48} strokeWidth={1.5} /></div>
                 <h3>Aucun projet trouvé</h3>
                 <p>Essayez de modifier vos filtres de recherche</p>
                 <button className="btn btn-primary" onClick={clearFilters}>

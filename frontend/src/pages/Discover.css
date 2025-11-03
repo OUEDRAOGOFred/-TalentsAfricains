@@ -71,9 +71,11 @@
   color: var(--color-white);
   border: none;
   border-radius: var(--radius-md);
-  font-size: 1.25rem;
   cursor: pointer;
   transition: all var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .search-btn:hover {
@@ -163,9 +165,12 @@
 }
 
 .empty-icon {
-  font-size: 5rem;
   margin-bottom: var(--spacing-md);
-  opacity: 0.5;
+  opacity: 0.4;
+  color: var(--color-gray);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .empty-state h3 {
