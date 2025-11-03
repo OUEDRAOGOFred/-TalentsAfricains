@@ -5,6 +5,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { Globe, Shield } from 'lucide-react';
 import './Header.css';
 
 const Header = () => {
@@ -31,7 +32,7 @@ const Header = () => {
       <div className="container">
         <nav className="navbar">
           <Link to="/" className="logo" onClick={closeMobileMenu}>
-            <span className="logo-icon">🌍</span>
+            <Globe className="logo-icon" size={32} />
             <span className="logo-text">TalentsAfricains</span>
           </Link>
 
@@ -59,7 +60,7 @@ const Header = () => {
                 )}
                 {user?.role === 'admin' && (
                   <Link to="/admin" className="nav-link admin-link" onClick={closeMobileMenu}>
-                    🛡️ Dashboard Admin
+                    <Shield size={18} style={{ marginRight: '6px', verticalAlign: 'middle' }} /> Dashboard Admin
                   </Link>
                 )}
                 <Link to="/profile" className="nav-link" onClick={closeMobileMenu}>

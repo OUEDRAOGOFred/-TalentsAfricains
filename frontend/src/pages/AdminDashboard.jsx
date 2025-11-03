@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import adminService from '../services/adminService';
-import { Shield, BarChart3, Users, FolderOpen, Heart, MessageCircle, Star, Flame } from 'lucide-react';
+import { Shield, BarChart3, Users, FolderOpen, Heart, MessageCircle, Star, Flame, Trash2 } from 'lucide-react';
 import '../styles/AdminDashboard.css';
 
 function AdminDashboard() {
@@ -299,7 +299,7 @@ function AdminDashboard() {
                           className="delete-btn"
                           onClick={() => handleDeleteUser(user.id)}
                         >
-                          🗑️ Supprimer
+                          <Trash2 size={16} style={{ marginRight: '4px' }} /> Supprimer
                         </button>
                       )}
                     </td>
@@ -349,7 +349,7 @@ function AdminDashboard() {
                         className="delete-btn"
                         onClick={() => handleDeleteProject(project.id)}
                       >
-                        🗑️ Supprimer
+                        <Trash2 size={16} style={{ marginRight: '4px' }} /> Supprimer
                       </button>
                     </td>
                   </tr>
