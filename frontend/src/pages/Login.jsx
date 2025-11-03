@@ -5,6 +5,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { Globe, Lightbulb, Rocket } from 'lucide-react';
 import './Auth.css';
 
 const Login = () => {
@@ -112,9 +113,9 @@ const Login = () => {
               qui façonnent l'avenir du continent.
             </p>
             <div className="visual-decoration">
-              <span className="decoration-emoji">🌍</span>
-              <span className="decoration-emoji">💡</span>
-              <span className="decoration-emoji">🚀</span>
+              <span className="decoration-emoji"><Globe size={40} strokeWidth={1.5} /></span>
+              <span className="decoration-emoji"><Lightbulb size={40} strokeWidth={1.5} /></span>
+              <span className="decoration-emoji"><Rocket size={40} strokeWidth={1.5} /></span>
             </div>
           </div>
         </div>
