@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import adminService from '../services/adminService';
+import { Shield, BarChart3, Users, FolderOpen, Heart, MessageCircle } from 'lucide-react';
 import '../styles/AdminDashboard.css';
 
 function AdminDashboard() {
@@ -105,7 +106,7 @@ function AdminDashboard() {
   return (
     <div className="admin-dashboard">
       <div className="admin-header">
-        <h1>🛡️ Tableau de Bord Administrateur</h1>
+        <h1><Shield size={28} style={{ display: 'inline', marginRight: '8px', verticalAlign: 'middle' }} /> Tableau de Bord Administrateur</h1>
         <p>Bienvenue, {user?.first_name} {user?.last_name}</p>
       </div>
 
@@ -114,19 +115,19 @@ function AdminDashboard() {
           className={activeTab === 'overview' ? 'active' : ''}
           onClick={() => setActiveTab('overview')}
         >
-          📊 Vue d'ensemble
+          <BarChart3 size={18} style={{ marginRight: '6px' }} /> Vue d'ensemble
         </button>
         <button
           className={activeTab === 'users' ? 'active' : ''}
           onClick={() => setActiveTab('users')}
         >
-          👥 Utilisateurs ({users.length})
+          <Users size={18} style={{ marginRight: '6px' }} /> Utilisateurs ({users.length})
         </button>
         <button
           className={activeTab === 'projects' ? 'active' : ''}
           onClick={() => setActiveTab('projects')}
         >
-          📁 Projets ({projects.length})
+          <FolderOpen size={18} style={{ marginRight: '6px' }} /> Projets ({projects.length})
         </button>
       </div>
 
@@ -135,7 +136,7 @@ function AdminDashboard() {
           {/* Cartes statistiques principales */}
           <div className="stats-cards">
             <div className="stat-card users">
-              <div className="stat-icon">👥</div>
+              <div className="stat-icon"><Users size={32} /></div>
               <div className="stat-info">
                 <h3>{statistics.users.total}</h3>
                 <p>Utilisateurs inscrits</p>
@@ -143,7 +144,7 @@ function AdminDashboard() {
             </div>
 
             <div className="stat-card projects">
-              <div className="stat-icon">📁</div>
+              <div className="stat-icon"><FolderOpen size={32} /></div>
               <div className="stat-info">
                 <h3>{statistics.projects.total}</h3>
                 <p>Projets publiés</p>
@@ -151,7 +152,7 @@ function AdminDashboard() {
             </div>
 
             <div className="stat-card likes">
-              <div className="stat-icon">❤️</div>
+              <div className="stat-icon"><Heart size={32} /></div>
               <div className="stat-info">
                 <h3>{statistics.interactions.likes}</h3>
                 <p>J'aime</p>
@@ -159,7 +160,7 @@ function AdminDashboard() {
             </div>
 
             <div className="stat-card comments">
-              <div className="stat-icon">💬</div>
+              <div className="stat-icon"><MessageCircle size={32} /></div>
               <div className="stat-info">
                 <h3>{statistics.interactions.comments}</h3>
                 <p>Commentaires</p>
