@@ -204,18 +204,16 @@
 }
 
 .stat-icon {
-  line-height: 1;
-  opacity: 1 !important;
-  display: inline-flex !important;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  color: #d4a574 !important;
+  width: 18px !important;
+  height: 18px !important;
+  min-width: 18px !important;
+  min-height: 18px !important;
+  display: inline-block !important;
+  vertical-align: middle !important;
+  flex-shrink: 0 !important;
   stroke: #d4a574 !important;
-  min-width: 16px;
-  min-height: 16px;
-  width: 16px !important;
-  height: 16px !important;
+  color: #d4a574 !important;
+  fill: none !important;
 }
 
 .btn-view-more {
