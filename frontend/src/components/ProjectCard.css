@@ -170,31 +170,31 @@
 }
 
 .project-card-footer {
-  padding: 10px 16px;
+  padding: 8px 14px;
   background: var(--color-light);
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  min-height: 50px;
+  gap: 10px;
+  min-height: 44px;
 }
 
 .project-stats {
   display: flex;
   flex-direction: row;
-  gap: 16px;
+  gap: 12px;
   align-items: center;
   flex-wrap: nowrap;
-  flex: 1;
+  flex: 0 1 auto;
 }
 
 .stat {
   display: inline-flex;
   flex-direction: row;
   align-items: center;
-  gap: 6px;
-  font-size: 0.875rem;
+  gap: 4px;
+  font-size: 0.8rem;
   color: #555;
   font-weight: 500;
   padding: 0;
@@ -209,16 +209,7 @@
 .stat-icon {
   width: 16px;
   height: 16px;
-  min-width: 16px;
-  min-height: 16px;
-  display: inline-block;
   flex-shrink: 0;
-  stroke: #d4a574;
-  fill: none;
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  vertical-align: middle;
 }
 
 .btn-view-more {
@@ -226,16 +217,16 @@
   color: var(--color-white);
   border: none;
   font-weight: 600;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   cursor: pointer;
   transition: all var(--transition-fast);
-  padding: 8px 16px;
+  padding: 6px 12px;
   border-radius: var(--radius-sm);
   white-space: nowrap;
   flex-shrink: 0;
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 2px;
 }
 
 .btn-view-more:hover {
