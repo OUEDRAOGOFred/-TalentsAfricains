@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import adminService from '../services/adminService';
-import { Shield, BarChart3, Users, FolderOpen, Heart, MessageCircle } from 'lucide-react';
+import { Shield, BarChart3, Users, FolderOpen, Heart, MessageCircle, Star, Flame } from 'lucide-react';
 import '../styles/AdminDashboard.css';
 
 function AdminDashboard() {
@@ -200,7 +200,7 @@ function AdminDashboard() {
 
           {/* Utilisateurs les plus actifs */}
           <div className="stats-section">
-            <h2>🌟 Utilisateurs les plus actifs</h2>
+            <h2><Star size={22} style={{ display: 'inline', marginRight: '8px', verticalAlign: 'middle' }} /> Utilisateurs les plus actifs</h2>
             <div className="active-users-table">
               <table>
                 <thead>
@@ -235,7 +235,7 @@ function AdminDashboard() {
 
           {/* Projets populaires */}
           <div className="stats-section">
-            <h2>🔥 Projets les plus populaires</h2>
+            <h2><Flame size={22} style={{ display: 'inline', marginRight: '8px', verticalAlign: 'middle' }} /> Projets les plus populaires</h2>
             <div className="popular-projects-table">
               <table>
                 <thead>
