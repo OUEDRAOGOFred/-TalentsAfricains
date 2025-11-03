@@ -205,17 +205,17 @@
 
 .stat-icon {
   line-height: 1;
-  opacity: 1;
-  display: inline-flex;
+  opacity: 1 !important;
+  display: inline-flex !important;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  color: #555;
+  color: #d4a574 !important;
+  stroke: #d4a574 !important;
   min-width: 16px;
   min-height: 16px;
-  width: 16px;
-  height: 16px;
-  stroke-width: 2;
+  width: 16px !important;
+  height: 16px !important;
 }
 
 .btn-view-more {
