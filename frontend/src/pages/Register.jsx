@@ -5,6 +5,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { Check } from 'lucide-react';
 import './Auth.css';
 
 const Register = () => {
@@ -246,10 +247,10 @@ const Register = () => {
               une communauté de talents et d'investisseurs passionnés.
             </p>
             <ul className="visual-benefits">
-              <li>✅ Présentez vos projets</li>
-              <li>✅ Trouvez des investisseurs</li>
-              <li>✅ Rejoignez une communauté</li>
-              <li>✅ Développez votre réseau</li>
+              <li><Check size={20} strokeWidth={2.5} style={{ marginRight: '8px', color: '#4ade80' }} /> Présentez vos projets</li>
+              <li><Check size={20} strokeWidth={2.5} style={{ marginRight: '8px', color: '#4ade80' }} /> Trouvez des investisseurs</li>
+              <li><Check size={20} strokeWidth={2.5} style={{ marginRight: '8px', color: '#4ade80' }} /> Rejoignez une communauté</li>
+              <li><Check size={20} strokeWidth={2.5} style={{ marginRight: '8px', color: '#4ade80' }} /> Développez votre réseau</li>
             </ul>
           </div>
         </div>
