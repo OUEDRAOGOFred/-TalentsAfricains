@@ -91,14 +91,14 @@ const Discover = () => {
                   onChange={(e) => handleFilterChange('categorie', e.target.value)}
                 >
                   <option value="">Toutes les catégories</option>
-                  <option value="technologie">💻 Technologie</option>
-                  <option value="art">🎨 Art</option>
-                  <option value="entrepreneuriat">💼 Entrepreneuriat</option>
-                  <option value="innovation">💡 Innovation</option>
-                  <option value="education">📚 Éducation</option>
-                  <option value="sante">🏥 Santé</option>
-                  <option value="agriculture">🌾 Agriculture</option>
-                  <option value="autre">🔹 Autre</option>
+                  <option value="technologie">Technologie</option>
+                  <option value="art">Art</option>
+                  <option value="entrepreneuriat">Entrepreneuriat</option>
+                  <option value="innovation">Innovation</option>
+                  <option value="education">Éducation</option>
+                  <option value="sante">Santé</option>
+                  <option value="agriculture">Agriculture</option>
+                  <option value="autre">Autre</option>
                 </select>
               </div>
 

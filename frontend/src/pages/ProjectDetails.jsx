@@ -4,6 +4,20 @@
 
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
+import { 
+  Heart, 
+  MessageCircle, 
+  Eye, 
+  MapPin,
+  ExternalLink,
+  Send,
+  Mail,
+  Linkedin,
+  Twitter as TwitterIcon,
+  Globe,
+  User,
+  ArrowLeft
+} from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import projectService from '../services/projectService';
 import interactionService from '../services/interactionService';
@@ -83,10 +97,10 @@ const ProjectDetails = () => {
     try {
       // Copier l'email dans le presse-papiers
       await navigator.clipboard.writeText(email);
-      alert(`✅ Email copié dans le presse-papiers !\n\n📧 ${email}\n\nVous pouvez maintenant coller cet email dans votre client de messagerie (Gmail, Outlook, etc.)`);
+      alert(`Email copié dans le presse-papiers !\n\n${email}\n\nVous pouvez maintenant coller cet email dans votre client de messagerie.`);
     } catch (error) {
       // Si la copie échoue, afficher l'email
-      alert(`📧 Email du porteur de projet :\n\n${email}\n\nVeuillez copier cet email manuellement.`);
+      alert(`Email du porteur de projet :\n\n${email}\n\nVeuillez copier cet email manuellement.`);
     }
   };
 
@@ -137,7 +151,7 @@ const ProjectDetails = () => {
                 <span className="badge badge-primary">{project.categorie}</span>
                 {project.localisation && (
                   <span className="location-badge">
-                    📍 {project.localisation}
+                    <MapPin size={16} /> {project.localisation}
                   </span>
                 )}
               </div>
@@ -149,11 +163,15 @@ const ProjectDetails = () => {
                   className={`like-btn ${liked ? 'liked' : ''}`}
                   onClick={handleLike}
                 >
-                  <span className="like-icon">{liked ? '❤️' : '🤍'}</span>
+                  <Heart size={18} className="like-icon" fill={liked ? 'currentColor' : 'none'} />
                   <span className="like-count">{likesCount}</span>
                 </button>
-                <span className="stat">💬 {comments.length} commentaires</span>
-                <span className="stat">👁️ {project.views_count || 0} vues</span>
+                <span className="stat">
+                  <MessageCircle size={18} /> {comments.length} commentaires
+                </span>
+                <span className="stat">
+                  <Eye size={18} /> {project.views_count || 0} vues
+                </span>
               </div>
             </div>
 
@@ -166,7 +184,7 @@ const ProjectDetails = () => {
               <div className="project-link">
                 <h3>Lien externe</h3>
                 <a href={project.lien_externe} target="_blank" rel="noopener noreferrer" className="external-link">
-                  🔗 {project.lien_externe}
+                  <ExternalLink size={18} /> {project.lien_externe}
                 </a>
               </div>
             )}
@@ -189,7 +207,10 @@ const ProjectDetails = () => {
 
             {/* Section commentaires */}
             <div className="comments-section">
-              <h2>💬 Commentaires ({comments.length})</h2>
+              <h2>
+                <MessageCircle size={24} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
+                Commentaires ({comments.length})
+              </h2>
 
               {isAuthenticated && (
                 <form onSubmit={handleCommentSubmit} className="comment-form">
@@ -202,6 +223,7 @@ const ProjectDetails = () => {
                     required
                   />
                   <button type="submit" className="btn btn-primary">
+                    <Send size={18} style={{ marginRight: '6px' }} />
                     Publier le commentaire
                   </button>
                 </form>
@@ -292,9 +314,10 @@ const ProjectDetails = () => {
                 <button 
                   onClick={handleContactEmail}
                   className="btn btn-primary btn-contact"
-                  style={{ width: '100%', marginBottom: '1rem' }}
+                  style={{ width: '100%', marginBottom: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
                 >
-                  ✉️ Contacter par email
+                  <Mail size={18} />
+                  Contacter par email
                 </button>
               )}
 
@@ -302,17 +325,17 @@ const ProjectDetails = () => {
                 <div className="author-social">
                   {project.linkedin && (
                     <a href={project.linkedin} target="_blank" rel="noopener noreferrer" className="social-btn">
-                      💼 LinkedIn
+                      <Linkedin size={18} /> LinkedIn
                     </a>
                   )}
                   {project.twitter && (
                     <a href={project.twitter} target="_blank" rel="noopener noreferrer" className="social-btn">
-                      🐦 Twitter
+                      <TwitterIcon size={18} /> Twitter
                     </a>
                   )}
                   {project.website && (
                     <a href={project.website} target="_blank" rel="noopener noreferrer" className="social-btn">
-                      🌐 Website
+                      <Globe size={18} /> Website
                     </a>
                   )}
                 </div>

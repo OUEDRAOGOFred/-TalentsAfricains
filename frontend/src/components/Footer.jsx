@@ -3,6 +3,7 @@
  */
 
 import { Link } from 'react-router-dom';
+import { Globe, Twitter, Linkedin, Instagram, Facebook, Heart } from 'lucide-react';
 import './Footer.css';
 
 const Footer = () => {
@@ -14,7 +15,7 @@ const Footer = () => {
         <div className="footer-content">
           <div className="footer-section">
             <div className="footer-logo">
-              <span className="logo-icon">🌍</span>
+              <Globe size={24} className="logo-icon" />
               <span className="logo-text">TalentsAfricains</span>
             </div>
             <p className="footer-description">
@@ -50,17 +51,19 @@ const Footer = () => {
               la créativité et l'entrepreneuriat en Afrique.
             </p>
             <div className="social-links">
-              <a href="#" className="social-link" aria-label="Twitter">🐦</a>
-              <a href="#" className="social-link" aria-label="LinkedIn">💼</a>
-              <a href="#" className="social-link" aria-label="Instagram">📸</a>
-              <a href="#" className="social-link" aria-label="Facebook">📘</a>
+              <a href="#" className="social-link" aria-label="Twitter"><Twitter size={20} /></a>
+              <a href="#" className="social-link" aria-label="LinkedIn"><Linkedin size={20} /></a>
+              <a href="#" className="social-link" aria-label="Instagram"><Instagram size={20} /></a>
+              <a href="#" className="social-link" aria-label="Facebook"><Facebook size={20} /></a>
             </div>
           </div>
         </div>
 
         <div className="footer-bottom">
           <p>&copy; {currentYear} TalentsAfricains. Tous droits réservés.</p>
-          <p>Fait avec ❤️ pour l'Afrique</p>
+          <p style={{ display: 'flex', alignItems: 'center', gap: '6px', justifyContent: 'center' }}>
+            Fait avec <Heart size={16} fill="currentColor" /> pour l'Afrique
+          </p>
         </div>
       </div>
     </footer>

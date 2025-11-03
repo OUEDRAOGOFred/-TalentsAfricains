@@ -4,6 +4,18 @@
 
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { 
+  Camera, 
+  Briefcase, 
+  User, 
+  MapPin, 
+  FileText, 
+  Award,
+  Linkedin,
+  Twitter as TwitterIcon,
+  Globe,
+  Plus
+} from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import authService from '../services/authService';
 import projectService from '../services/projectService';
@@ -114,7 +126,7 @@ const Profile = () => {
                 )}
                 {editing && (
                   <label htmlFor="photo_profil" className="photo-upload-btn">
-                    📷
+                    <Camera size={20} />
                     <input
                       type="file"
                       id="photo_profil"
@@ -129,7 +141,11 @@ const Profile = () => {
               <h2 className="profile-name">{user?.first_name} {user?.last_name}</h2>
               <p className="profile-email">{user?.email}</p>
               <span className="profile-role badge badge-primary">
-                {user?.role === 'porteur_projet' ? '💼 Porteur de projet' : '👤 Visiteur'}
+                {user?.role === 'porteur_projet' ? (
+                  <><Briefcase size={14} /> Porteur de projet</>
+                ) : (
+                  <><User size={14} /> Visiteur</>
+                )}
               </span>
 
               {!editing && (
@@ -281,19 +297,19 @@ const Profile = () => {
                   <div className="info-grid">
                     {user?.pays && (
                       <div className="info-item">
-                        <strong>📍 Pays</strong>
+                        <strong><MapPin size={18} style={{ marginRight: '6px', verticalAlign: 'middle' }} /> Pays</strong>
                         <span>{user.pays}</span>
                       </div>
                     )}
                     {user?.bio && (
                       <div className="info-item">
-                        <strong>✍️ Bio</strong>
+                        <strong><FileText size={18} style={{ marginRight: '6px', verticalAlign: 'middle' }} /> Bio</strong>
                         <p>{user.bio}</p>
                       </div>
                     )}
                     {user?.competences && (
                       <div className="info-item">
-                        <strong>💼 Compétences</strong>
+                        <strong><Award size={18} style={{ marginRight: '6px', verticalAlign: 'middle' }} /> Compétences</strong>
                         <span>{user.competences}</span>
                       </div>
                     )}
@@ -303,17 +319,17 @@ const Profile = () => {
                     <div className="social-links">
                       {user.linkedin && (
                         <a href={user.linkedin} target="_blank" rel="noopener noreferrer" className="social-btn">
-                          💼 LinkedIn
+                          <Linkedin size={18} /> LinkedIn
                         </a>
                       )}
                       {user.twitter && (
                         <a href={user.twitter} target="_blank" rel="noopener noreferrer" className="social-btn">
-                          🐦 Twitter
+                          <TwitterIcon size={18} /> Twitter
                         </a>
                       )}
                       {user.website && (
                         <a href={user.website} target="_blank" rel="noopener noreferrer" className="social-btn">
-                          🌐 Website
+                          <Globe size={18} /> Website
                         </a>
                       )}
                     </div>
@@ -327,8 +343,9 @@ const Profile = () => {
                       <button
                         onClick={() => navigate('/add-project')}
                         className="btn btn-primary btn-sm"
+                        style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}
                       >
-                        + Nouveau projet
+                        <Plus size={18} /> Nouveau projet
                       </button>
                     </div>
 

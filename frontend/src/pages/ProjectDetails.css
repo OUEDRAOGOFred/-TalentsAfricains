@@ -69,6 +69,9 @@
   border-radius: var(--radius-sm);
   font-size: 0.9rem;
   font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .project-title {
@@ -113,8 +116,15 @@
 }
 
 .like-icon {
-  font-size: 14px;
   line-height: 1;
+  display: inline-flex;
+  align-items: center;
+}
+
+.stat {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .project-description,
@@ -131,6 +141,8 @@
 .comments-section h2 {
   font-size: 1.75rem;
   margin-bottom: var(--spacing-md);
+  display: flex;
+  align-items: center;
 }
 
 .project-description p {

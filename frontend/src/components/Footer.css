@@ -32,6 +32,10 @@
   margin-bottom: var(--spacing-sm);
 }
 
+.footer-logo .logo-icon {
+  color: var(--color-primary-light);
+}
+
 .footer-logo .logo-text {
   background: linear-gradient(135deg, var(--color-white), var(--color-primary-light));
   -webkit-background-clip: text;
@@ -87,9 +91,9 @@
   height: 45px;
   background: rgba(255, 255, 255, 0.1);
   border-radius: var(--radius-md);
-  font-size: 1.5rem;
   transition: all var(--transition-normal);
   text-decoration: none;
+  color: var(--color-white);
 }
 
 .social-link:hover {

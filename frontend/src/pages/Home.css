@@ -242,11 +242,12 @@
 }
 
 .stat-icon {
-  font-size: 1.4rem;
-  margin-bottom: 0.25rem;
-  display: inline-block;
+  margin-bottom: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   transition: all 0.3s ease;
-  line-height: 1;
+  color: var(--color-primary);
 }
 
 .stat-card:hover .stat-icon {
@@ -427,15 +428,16 @@
 }
 
 .category-icon {
-  font-size: 3.5rem;
   margin-bottom: 1rem;
   transition: all 0.4s ease;
-  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+  color: var(--color-primary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .category-card:hover .category-icon {
-  transform: scale(1.15) rotate(5deg);
-  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.15));
+  transform: scale(1.15);
 }
 
 .category-name {

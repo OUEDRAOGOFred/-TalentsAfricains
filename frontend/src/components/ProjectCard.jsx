@@ -3,6 +3,22 @@
  */
 
 import { Link } from 'react-router-dom';
+import { 
+  Heart, 
+  MessageCircle, 
+  Eye, 
+  MapPin, 
+  Globe,
+  Laptop,
+  Palette,
+  Briefcase,
+  Lightbulb,
+  GraduationCap,
+  HeartPulse,
+  Sprout,
+  MoreHorizontal,
+  ArrowRight
+} from 'lucide-react';
 import './ProjectCard.css';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
@@ -12,16 +28,30 @@ const ProjectCard = ({ project }) => {
     ? `${API_URL.replace('/api', '')}/uploads/${project.image_principale}`
     : null;
 
+  const getCategoryIcon = (category) => {
+    const icons = {
+      technologie: <Laptop size={14} />,
+      art: <Palette size={14} />,
+      entrepreneuriat: <Briefcase size={14} />,
+      innovation: <Lightbulb size={14} />,
+      education: <GraduationCap size={14} />,
+      sante: <HeartPulse size={14} />,
+      agriculture: <Sprout size={14} />,
+      autre: <MoreHorizontal size={14} />
+    };
+    return icons[category] || <MoreHorizontal size={14} />;
+  };
+
   const getCategoryLabel = (category) => {
     const labels = {
-      technologie: '💻 Technologie',
-      art: '🎨 Art',
-      entrepreneuriat: '💼 Entrepreneuriat',
-      innovation: '💡 Innovation',
-      education: '📚 Éducation',
-      sante: '🏥 Santé',
-      agriculture: '🌾 Agriculture',
-      autre: '🔹 Autre'
+      technologie: 'Technologie',
+      art: 'Art',
+      entrepreneuriat: 'Entrepreneuriat',
+      innovation: 'Innovation',
+      education: 'Éducation',
+      sante: 'Santé',
+      agriculture: 'Agriculture',
+      autre: 'Autre'
     };
     return labels[category] || category;
   };
@@ -47,10 +77,13 @@ const ProjectCard = ({ project }) => {
             />
           ) : null}
           <div className="project-card-placeholder" style={{ display: imageUrl ? 'none' : 'flex' }}>
-            <span className="placeholder-icon">🌍</span>
+            <Globe size={48} strokeWidth={1.5} className="placeholder-icon" />
           </div>
           <div className="project-card-overlay">
-            <span className="badge badge-primary">{getCategoryLabel(project.categorie)}</span>
+            <span className="badge badge-primary">
+              {getCategoryIcon(project.categorie)}
+              <span style={{ marginLeft: '6px' }}>{getCategoryLabel(project.categorie)}</span>
+            </span>
           </div>
         </div>
 
@@ -79,7 +112,7 @@ const ProjectCard = ({ project }) => {
 
             {project.localisation && (
               <div className="project-location">
-                <span className="location-icon">📍</span>
+                <MapPin size={14} className="location-icon" />
                 {project.localisation}
               </div>
             )}
@@ -89,20 +122,21 @@ const ProjectCard = ({ project }) => {
         <div className="project-card-footer">
           <div className="project-stats">
             <span className="stat">
-              <span className="stat-icon">♥</span>
+              <Heart size={14} className="stat-icon" />
               {project.likes_count || 0}
             </span>
             <span className="stat">
-              <span className="stat-icon">�</span>
+              <MessageCircle size={14} className="stat-icon" />
               {project.comments_count || 0}
             </span>
             <span className="stat">
-              <span className="stat-icon">👁</span>
+              <Eye size={14} className="stat-icon" />
               {project.views_count || 0}
             </span>
           </div>
           <button className="btn-view-more">
-            Voir plus →
+            Voir plus
+            <ArrowRight size={16} style={{ marginLeft: '4px' }} />
           </button>
         </div>
       </Link>
