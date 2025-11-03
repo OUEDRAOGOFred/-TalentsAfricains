@@ -1,5 +1,6 @@
 /**
  * Composant ProjectCard - Carte de projet
+ * Affichage optimisé avec icônes Lucide React
  */
 
 import { Link } from 'react-router-dom';
