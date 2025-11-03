@@ -122,21 +122,21 @@ const ProjectCard = ({ project }) => {
         <div className="project-card-footer">
           <div className="project-stats">
             <span className="stat">
-              <Heart size={16} strokeWidth={2} className="stat-icon" />
+              <Heart size={16} className="stat-icon" />
               {project.likes_count || 0}
             </span>
             <span className="stat">
-              <MessageCircle size={16} strokeWidth={2} className="stat-icon" />
+              <MessageCircle size={16} className="stat-icon" />
               {project.comments_count || 0}
             </span>
             <span className="stat">
-              <Eye size={16} strokeWidth={2} className="stat-icon" />
+              <Eye size={16} className="stat-icon" />
               {project.views_count || 0}
             </span>
           </div>
           <button className="btn-view-more">
             Voir plus
-            <ArrowRight size={16} strokeWidth={2} style={{ marginLeft: '4px' }} />
+            <ArrowRight size={16} style={{ marginLeft: '4px' }} />
           </button>
         </div>
       </Link>
