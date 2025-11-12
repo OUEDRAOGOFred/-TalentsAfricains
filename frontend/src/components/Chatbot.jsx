@@ -4,6 +4,8 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { MessageCircle, X, Send, User, Bot } from 'lucide-react';
+import { api } from '../services/api';
+import projectService from '../services/projectService';
 import './Chatbot.css';
 
 const Chatbot = () => {
@@ -16,6 +18,8 @@ const Chatbot = () => {
       timestamp: new Date()
     }
   ]);
+  const [allProjects, setAllProjects] = useState([]);
+  const [projectsLoaded, setProjectsLoaded] = useState(false);
   const [inputMessage, setInputMessage] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef(null);
@@ -27,6 +31,35 @@ const Chatbot = () => {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  // Charger tous les projets pour le contexte de Gemini
+  useEffect(() => {
+    const loadAllProjects = async () => {
+      try {
+        const response = await projectService.getAll({ limit: 100 }); // Charger jusqu'à 100 projets
+        setAllProjects(response.projects || []);
+        setProjectsLoaded(true);
+      } catch (error) {
+        console.error('Erreur lors du chargement des projets:', error);
+        setProjectsLoaded(true); // Marquer comme chargé même en cas d'erreur
+      }
+    };
+
+    loadAllProjects();
+  }, []);
+
+  // Récupérer les projets au montage du composant
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const response = await api.get('/projects');
+        setProjects(response.data);
+      } catch (error) {
+        console.error('Erreur lors de la récupération des projets:', error);
+      }
+    };
+    fetchProjects();
+  }, []);
 
   const quickReplies = [
     "Comment créer un projet ?",
@@ -60,9 +93,14 @@ const Chatbot = () => {
       }
     }
     
+    // Attendre que les projets soient chargés
+    if (!projectsLoaded) {
+      return "Je charge les informations sur les projets... Une petite seconde !";
+    }
+    
     // Si aucune réponse prédéfinie, utiliser Gemini AI
     try {
-      const geminiResponse = await callGeminiAPI(userMessage);
+      const geminiResponse = await callGeminiAPI(userMessage, allProjects);
       return geminiResponse;
     } catch (error) {
       console.error('Erreur avec Gemini:', error);
@@ -70,7 +108,7 @@ const Chatbot = () => {
     }
   };
 
-  const callGeminiAPI = async (message) => {
+  const callGeminiAPI = async (message, projectsData) => {
     const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 
     if (!GEMINI_API_KEY) {
@@ -133,7 +171,33 @@ Rayonnement est une plateforme web moderne qui connecte les porteurs de projets 
 - Email : support@rayonnement.com
 - Réponse sous 24h en moyenne
 
-INSTRUCTION IMPORTANTE : Réponds TOUJOURS en français, de manière helpful, engageante et professionnelle. Si la question n'est pas liée à Rayonnement, redirige gentiment vers nos fonctionnalités. Utilise les informations ci-dessus pour donner des réponses précises et complètes.
+## PROJETS DISPONIBLES SUR LA PLATEFORME :
+${projectsData && projectsData.length > 0 ? projectsData.map(project => 
+  `- **${project.titre}** (${project.categorie}) : ${project.description.substring(0, 150)}... 
+    *Auteur: ${project.first_name} ${project.last_name}*
+    *Localisation: ${project.localisation || 'Non spécifiée'}*
+    *Likes: ${project.likes_count}, Commentaires: ${project.comments_count}, Vues: ${project.views_count}*
+    *Créé le: ${new Date(project.created_at).toLocaleDateString('fr-FR')}*
+    ${project.lien_externe ? `*Lien externe: ${project.lien_externe}*` : ''}`
+).join('\n\n') : 'Aucun projet disponible pour le moment.'}
+
+## INSTRUCTIONS SPÉCIFIQUES POUR LES PROJETS :
+- **Recherche par auteur** : Si l'utilisateur mentionne un nom, recherche dans les projets de cet auteur
+- **Recherche par catégorie** : Oriente vers les bonnes catégories selon les intérêts
+- **Recherche par mots-clés** : Analyse les descriptions pour trouver des projets pertinents
+- **Recommandations** : Suggère des projets similaires ou complémentaires
+- **Détails complets** : Fournis titre, description, auteur, statistiques, date de création
+- **Liens externes** : Mentionne les liens externes quand disponibles
+
+INSTRUCTION IMPORTANTE : Tu as accès à la liste complète des projets publiés sur Rayonnement. Utilise ces informations pour :
+- Répondre aux questions spécifiques sur les projets existants
+- Recommander des projets pertinents selon les intérêts de l'utilisateur
+- Fournir des détails complets sur les auteurs et leurs projets
+- Aider les utilisateurs à découvrir des projets dans leurs domaines d'intérêt
+- Comparer des projets similaires
+- Expliquer les statistiques (likes, vues, commentaires)
+
+Réponds TOUJOURS en français, de manière helpful, engageante et professionnelle. Si la question n'est pas liée à Rayonnement, redirige gentiment vers nos fonctionnalités. Utilise les informations ci-dessus pour donner des réponses précises et complètes.
 
 Question de l'utilisateur : "${message}"`
             }]
