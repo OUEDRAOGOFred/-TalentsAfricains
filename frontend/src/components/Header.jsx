@@ -5,11 +5,13 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Globe, Shield } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
+import { Globe, Shield, Languages } from 'lucide-react';
 import './Header.css';
 
 const Header = () => {
   const { user, logout, isAuthenticated } = useAuth();
+  const { language, toggleLanguage, t } = useLanguage();
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -48,36 +50,57 @@ const Header = () => {
 
           <div className={`nav-menu ${mobileMenuOpen ? 'active' : ''}`}>
             <Link to="/discover" className="nav-link" onClick={closeMobileMenu}>
-              Découvrir
+              {t('nav.discover')}
             </Link>
             
             {isAuthenticated ? (
               <>
                 {user?.role === 'porteur_projet' && (
                   <Link to="/add-project" className="nav-link" onClick={closeMobileMenu}>
-                    Ajouter un projet
+                    {t('nav.addProject')}
                   </Link>
                 )}
                 {user?.role === 'admin' && (
                   <Link to="/admin" className="nav-link admin-link" onClick={closeMobileMenu}>
-                    <Shield size={18} style={{ marginRight: '6px', verticalAlign: 'middle' }} /> Dashboard Admin
+                    <Shield size={18} style={{ marginRight: '6px', verticalAlign: 'middle' }} /> {t('nav.admin')}
                   </Link>
                 )}
                 <Link to="/profile" className="nav-link" onClick={closeMobileMenu}>
-                  Mon profil
+                  {t('nav.profile')}
                 </Link>
+                
+                {/* Bouton de langue */}
+                <button 
+                  onClick={toggleLanguage} 
+                  className="language-toggle"
+                  title={language === 'fr' ? 'Switch to English' : 'Passer en français'}
+                >
+                  <Languages size={20} />
+                  <span className="language-text">{language === 'fr' ? 'EN' : 'FR'}</span>
+                </button>
+                
                 <button onClick={handleLogout} className="btn btn-outline btn-sm">
-                  Déconnexion
+                  {t('nav.logout')}
                 </button>
               </>
             ) : (
               <>
+                {/* Bouton de langue pour non connectés */}
+                <button 
+                  onClick={toggleLanguage} 
+                  className="language-toggle"
+                  title={language === 'fr' ? 'Switch to English' : 'Passer en français'}
+                >
+                  <Languages size={20} />
+                  <span className="language-text">{language === 'fr' ? 'EN' : 'FR'}</span>
+                </button>
+                
                 <Link to="/login" className="nav-link" onClick={closeMobileMenu}>
-                  Connexion
+                  {t('nav.login')}
                 </Link>
                 <Link to="/register" onClick={closeMobileMenu}>
                   <button className="btn btn-primary btn-sm">
-                    S'inscrire
+                    {t('nav.register')}
                   </button>
                 </Link>
               </>
