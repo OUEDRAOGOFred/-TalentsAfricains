@@ -48,7 +48,7 @@ const Login = () => {
         <div className="auth-box">
           <div className="auth-header">
             <h1 className="auth-title">Bienvenue !</h1>
-            <p className="auth-subtitle">Connectez-vous pour découvrir les talents africains</p>
+            <p className="auth-subtitle">Connectez-vous pour découvrir le rayonnement</p>
           </div>
 
           <form onSubmit={handleSubmit} className="auth-form">

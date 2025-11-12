@@ -174,7 +174,7 @@ const Home = () => {
           <div className="cta-content">
             <h2 className="cta-title">Prêt à partager votre projet ?</h2>
             <p className="cta-text">
-              Rejoignez des milliers de talents africains qui utilisent notre plateforme 
+              Rejoignez des milliers de rayonnement qui utilisent notre plateforme 
               pour présenter leurs projets innovants et connecter avec des investisseurs.
             </p>
             <Link to="/register">

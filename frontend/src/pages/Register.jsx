@@ -76,7 +76,7 @@ const Register = () => {
         <div className="auth-box auth-box-wide">
           <div className="auth-header">
             <h1 className="auth-title">Créer un compte</h1>
-            <p className="auth-subtitle">Rejoignez la communauté des talents africains</p>
+            <p className="auth-subtitle">Rejoignez la communauté du rayonnement</p>
           </div>
 
           <form onSubmit={handleSubmit} className="auth-form">
