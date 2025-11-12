@@ -1,7 +1,7 @@
 {
-  "name": "talentsafricains-backend",
+  "name": "rayonnement-backend",
   "version": "1.0.0",
-  "description": "Backend API pour TalentsAfricains - Plateforme de mise en avant des talents africains",
+  "description": "Backend API pour Rayonnement - Plateforme de mise en avant des talents africains",
   "main": "src/server.js",
   "scripts": {
     "start": "node src/server.js",

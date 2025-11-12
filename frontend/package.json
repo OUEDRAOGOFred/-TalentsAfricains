@@ -1,7 +1,7 @@
 {
-  "name": "talentsafricains-frontend",
+  "name": "rayonnement-frontend",
   "version": "1.0.0",
-  "description": "Frontend React pour TalentsAfricains - Plateforme de mise en avant des talents africains",
+  "description": "Frontend React pour Rayonnement - Plateforme de mise en avant des talents africains",
   "private": true,
   "dependencies": {
     "axios": "^1.6.2",

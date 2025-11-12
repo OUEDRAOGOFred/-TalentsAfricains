@@ -16,7 +16,7 @@ const Footer = () => {
           <div className="footer-section">
             <div className="footer-logo">
               <Globe size={24} className="logo-icon" />
-              <span className="logo-text">TalentsAfricains</span>
+              <span className="logo-text">Rayonnement</span>
             </div>
             <p className="footer-description">
               Plateforme dédiée à la mise en avant des talents et projets innovants africains. 
@@ -47,7 +47,7 @@ const Footer = () => {
           <div className="footer-section">
             <h4 className="footer-title">À propos</h4>
             <p className="footer-text">
-              TalentsAfricains est une plateforme qui célèbre l'innovation, 
+              Rayonnement est une plateforme qui célèbre l'innovation, 
               la créativité et l'entrepreneuriat en Afrique.
             </p>
             <div className="social-links">
@@ -60,7 +60,7 @@ const Footer = () => {
         </div>
 
         <div className="footer-bottom">
-          <p>&copy; {currentYear} TalentsAfricains. Tous droits réservés.</p>
+          <p>&copy; {currentYear} Rayonnement. Tous droits réservés.</p>
           <p style={{ display: 'flex', alignItems: 'center', gap: '6px', justifyContent: 'center' }}>
             Fait avec <Heart size={16} fill="currentColor" /> pour l'Afrique
           </p>

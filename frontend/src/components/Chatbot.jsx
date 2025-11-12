@@ -11,7 +11,7 @@ const Chatbot = () => {
   const [messages, setMessages] = useState([
     {
       id: 1,
-      text: "Bonjour ! Je suis l'assistant virtuel de TalentsAfricains. Comment puis-je vous aider aujourd'hui ?",
+      text: "Bonjour ! Je suis l'assistant virtuel de Rayonnement. Comment puis-je vous aider aujourd'hui ?",
       isBot: true,
       timestamp: new Date()
     }
@@ -41,7 +41,7 @@ const Chatbot = () => {
     
     "comment trouver des investisseurs": "Notre plateforme met en relation les porteurs de projets avec des investisseurs. Assurez-vous que votre profil et vos projets sont complets et attractifs. Utilisez la section 'Découvrir' pour voir comment d'autres projets se présentent.",
     
-    "comment rejoindre la communauté": "Créez simplement un compte gratuit sur TalentsAfricains ! Choisissez votre rôle (visiteur, porteur de projet, investisseur) et complétez votre profil pour commencer à interagir avec la communauté.",
+    "comment rejoindre la communauté": "Créez simplement un compte gratuit sur Rayonnement ! Choisissez votre rôle (visiteur, porteur de projet, investisseur) et complétez votre profil pour commencer à interagir avec la communauté.",
     
     "quelles sont les catégories disponibles": "Nous avons 7 catégories principales : Technologie, Art & Culture, Entrepreneuriat, Innovation, Éducation, Santé, et Agriculture. Chaque projet peut être classé dans l'une de ces catégories.",
     
@@ -128,7 +128,7 @@ const Chatbot = () => {
             <div className="chatbot-header-info">
               <Bot size={20} />
               <div>
-                <h4>Assistant TalentsAfricains</h4>
+                <h4>Assistant Rayonnement</h4>
                 <span className="status">En ligne</span>
               </div>
             </div>

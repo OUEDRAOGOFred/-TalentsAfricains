@@ -1,4 +1,4 @@
-# 🌍 TalentsAfricains
+# 🌍 Rayonnement
 
 **Plateforme de mise en avant des talents et projets innovants africains**
 
@@ -68,8 +68,8 @@ Une application web élégante et moderne qui connecte les porteurs de projets a
 
 ### 1. Cloner le repository
 ```bash
-git clone https://github.com/votre-username/TalentsAfricains.git
-cd TalentsAfricains
+git clone https://github.com/votre-username/Rayonnement.git
+cd Rayonnement
 ```
 
 ### 2. Configuration de la base de données
