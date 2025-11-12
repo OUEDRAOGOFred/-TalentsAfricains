@@ -105,6 +105,54 @@ const Chatbot = () => {
     loadPlatformData();
   }, []);
 
+  // Rafraîchir les données toutes les 2 minutes pour avoir les nouveaux projets
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const loadPlatformData = async () => {
+        try {
+          const projectsResponse = await projectService.getAll({ limit: 100 });
+          const projects = projectsResponse.data?.projects || projectsResponse.projects || [];
+          setAllProjects(projects);
+          
+          const user = authService.getCurrentUser();
+          setCurrentUser(user);
+          
+          const stats = {
+            totalProjects: projects.length,
+            totalLikes: projects.reduce((sum, p) => sum + (p.likes_count || 0), 0),
+            totalViews: projects.reduce((sum, p) => sum + (p.views_count || 0), 0),
+            totalComments: projects.reduce((sum, p) => sum + (p.comments_count || 0), 0),
+            categoriesCount: {
+              technologie: projects.filter(p => p.categorie === 'technologie').length,
+              art: projects.filter(p => p.categorie === 'art').length,
+              entrepreneuriat: projects.filter(p => p.categorie === 'entrepreneuriat').length,
+              innovation: projects.filter(p => p.categorie === 'innovation').length,
+              education: projects.filter(p => p.categorie === 'education').length,
+              sante: projects.filter(p => p.categorie === 'sante').length,
+              agriculture: projects.filter(p => p.categorie === 'agriculture').length
+            },
+            topProjects: projects
+              .sort((a, b) => (b.likes_count || 0) - (a.likes_count || 0))
+              .slice(0, 5),
+            recentProjects: projects
+              .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+              .slice(0, 5),
+            uniqueAuthors: [...new Set(projects.map(p => `${p.first_name} ${p.last_name}`))].length
+          };
+          
+          setPlatformStats(stats);
+          console.log('✅ Données rafraîchies automatiquement:', projects.length, 'projets');
+        } catch (error) {
+          console.error('Erreur lors du rafraîchissement:', error);
+        }
+      };
+      
+      loadPlatformData();
+    }, 120000); // Rafraîchir toutes les 2 minutes (120000ms)
+
+    return () => clearInterval(interval); // Nettoyer l'intervalle quand le composant est démonté
+  }, []);
+
   const quickReplies = [
     "Comment créer un projet ?",
     "Comment trouver des investisseurs ?",
