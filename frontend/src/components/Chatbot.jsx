@@ -1,5 +1,5 @@
 /**
- * Composant Chatbot - Assistant virtuel pour TalentsAfricains
+ * Composant Chatbot - Assistant virtuel pour Rayonnement
  */
 
 import { useState, useRef, useEffect } from 'react';
@@ -45,9 +45,9 @@ const Chatbot = () => {
     
     "quelles sont les catégories disponibles": "Nous avons 7 catégories principales : Technologie, Art & Culture, Entrepreneuriat, Innovation, Éducation, Santé, et Agriculture. Chaque projet peut être classé dans l'une de ces catégories.",
     
-    "comment contacter le support": "Vous pouvez nous contacter via ce chat, ou envoyer un email à support@talentsafricains.com. Nous répondons généralement sous 24h.",
+    "comment contacter le support": "Vous pouvez nous contacter via ce chat, ou envoyer un email à support@rayonnement.com. Nous répondons généralement sous 24h.",
     
-    "default": "Je comprends votre question. Pour une assistance personnalisée, n'hésitez pas à contacter notre équipe à support@talentsafricains.com ou explorez notre section d'aide."
+    "default": "🌟 Merci de votre intérêt pour Rayonnement ! Découvrez nos incroyables projets africains dans la section 'Découvrir', créez votre compte pour partager vos idées, ou explorez nos catégories pour trouver l'inspiration. Comment puis-je vous aider à commencer votre voyage avec nous ?"
   };
 
   const generateBotResponse = (userMessage) => {
