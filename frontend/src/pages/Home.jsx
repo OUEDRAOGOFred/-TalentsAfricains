@@ -162,7 +162,7 @@ const Home = () => {
             <Link to="/discover" className="category-card">
               <div className="category-icon"><ArrowRight size={32} strokeWidth={1.5} /></div>
               <h3 className="category-name">Autres</h3>
-              <p className="category-description">Entrepreneuriat, Innovation, Éducation, Santé, Agriculture et plus</p>
+              <p className="category-description">Entrepreneuriat et plus</p>
             </Link>
           </div>
         </div>
