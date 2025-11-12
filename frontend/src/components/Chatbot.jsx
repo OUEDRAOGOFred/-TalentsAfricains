@@ -50,46 +50,107 @@ const Chatbot = () => {
     "default": "🌟 Merci de votre intérêt pour Rayonnement ! Découvrez nos incroyables projets africains dans la section 'Découvrir', créez votre compte pour partager vos idées, ou explorez nos catégories pour trouver l'inspiration. Comment puis-je vous aider à commencer votre voyage avec nous ?"
   };
 
-  const generateBotResponse = (userMessage) => {
+  const generateBotResponse = async (userMessage) => {
     const message = userMessage.toLowerCase();
     
-    // Recherche de mots-clés dans le message
+    // Recherche de mots-clés dans le message pour les réponses prédéfinies
     for (const [key, response] of Object.entries(botResponses)) {
       if (key !== 'default' && message.includes(key.split(' ')[0])) {
         return response;
       }
     }
     
-    return botResponses.default;
+    // Si aucune réponse prédéfinie, utiliser Gemini AI
+    try {
+      const geminiResponse = await callGeminiAPI(userMessage);
+      return geminiResponse;
+    } catch (error) {
+      console.error('Erreur avec Gemini:', error);
+      return botResponses.default;
+    }
   };
 
-  const handleSendMessage = () => {
+  const callGeminiAPI = async (message) => {
+    const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
+    
+    if (!GEMINI_API_KEY) {
+      return "Désolé, le service d'IA n'est pas disponible pour le moment. " + botResponses.default;
+    }
+
+    try {
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          contents: [{
+            parts: [{
+              text: `Tu es Rayonnement, un assistant virtuel pour une plateforme africaine de mise en avant des talents et projets innovants. 
+
+La plateforme Rayonnement permet aux porteurs de projets africains de présenter leurs idées innovantes dans les domaines de la technologie, l'art, l'entrepreneuriat, l'innovation, l'éducation, la santé et l'agriculture.
+
+Réponds de manière helpful, engageante et en français à cette question de l'utilisateur : "${message}"
+
+Si la question n'est pas liée à la plateforme, redirige gentiment vers les fonctionnalités de Rayonnement.`
+            }]
+          }]
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Erreur API Gemini');
+      }
+
+      const data = await response.json();
+      return data.candidates[0].content.parts[0].text;
+    } catch (error) {
+      console.error('Erreur lors de l\'appel à Gemini:', error);
+      return "Désolé, je rencontre un problème technique. " + botResponses.default;
+    }
+  };
+
+  const handleSendMessage = async () => {
     if (!inputMessage.trim()) return;
+
+    const currentMessage = inputMessage;
+    setInputMessage('');
+    setIsTyping(true);
 
     // Ajouter le message utilisateur
     const userMessage = {
       id: Date.now(),
-      text: inputMessage,
+      text: currentMessage,
       isBot: false,
       timestamp: new Date()
     };
 
     setMessages(prev => [...prev, userMessage]);
-    setInputMessage('');
-    setIsTyping(true);
 
-    // Simuler le délai de frappe du bot
-    setTimeout(() => {
+    try {
+      // Générer la réponse du bot (maintenant async)
+      const botResponseText = await generateBotResponse(currentMessage);
+
       const botResponse = {
         id: Date.now() + 1,
-        text: generateBotResponse(inputMessage),
+        text: botResponseText,
         isBot: true,
         timestamp: new Date()
       };
 
       setMessages(prev => [...prev, botResponse]);
+    } catch (error) {
+      console.error('Erreur lors de la génération de la réponse:', error);
+      const errorResponse = {
+        id: Date.now() + 1,
+        text: "Désolé, une erreur s'est produite. " + botResponses.default,
+        isBot: true,
+        timestamp: new Date()
+      };
+      setMessages(prev => [...prev, errorResponse]);
+    } finally {
       setIsTyping(false);
-    }, 1500);
+    }
   };
 
   const handleQuickReply = (reply) => {
