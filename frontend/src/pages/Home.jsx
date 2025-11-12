@@ -159,35 +159,10 @@ const Home = () => {
               <h3 className="category-name">Art & Culture</h3>
               <p className="category-description">Créativité et expression</p>
             </Link>
-            <Link to="/discover?categorie=entrepreneuriat" className="category-card">
-              <div className="category-icon"><Briefcase size={32} strokeWidth={1.5} /></div>
-              <h3 className="category-name">Entrepreneuriat</h3>
-              <p className="category-description">Business et startups</p>
-            </Link>
-            <Link to="/discover?categorie=innovation" className="category-card">
-              <div className="category-icon"><Lightbulb size={32} strokeWidth={1.5} /></div>
-              <h3 className="category-name">Innovation</h3>
-              <p className="category-description">Solutions créatives</p>
-            </Link>
-            <Link to="/discover?categorie=education" className="category-card">
-              <div className="category-icon"><GraduationCap size={32} strokeWidth={1.5} /></div>
-              <h3 className="category-name">Éducation</h3>
-              <p className="category-description">Formation et apprentissage</p>
-            </Link>
-            <Link to="/discover?categorie=sante" className="category-card">
-              <div className="category-icon"><HeartPulse size={32} strokeWidth={1.5} /></div>
-              <h3 className="category-name">Santé</h3>
-              <p className="category-description">Solutions de santé</p>
-            </Link>
-            <Link to="/discover?categorie=agriculture" className="category-card">
-              <div className="category-icon"><Sprout size={32} strokeWidth={1.5} /></div>
-              <h3 className="category-name">Agriculture</h3>
-              <p className="category-description">AgriTech et innovations</p>
-            </Link>
-            <Link to="/discover?categorie=autre" className="category-card">
+            <Link to="/discover" className="category-card">
               <div className="category-icon"><ArrowRight size={32} strokeWidth={1.5} /></div>
               <h3 className="category-name">Autres</h3>
-              <p className="category-description">Projets divers</p>
+              <p className="category-description">Entrepreneuriat, Innovation, Éducation, Santé, Agriculture et plus</p>
             </Link>
           </div>
         </div>
