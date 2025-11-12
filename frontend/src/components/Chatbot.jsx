@@ -72,13 +72,14 @@ const Chatbot = () => {
 
   const callGeminiAPI = async (message) => {
     const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
-    
+
     if (!GEMINI_API_KEY) {
       return "Désolé, le service d'IA n'est pas disponible pour le moment. " + botResponses.default;
     }
 
     try {
-      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
+      // Utiliser l'API Google AI (Gemini) avec le modèle disponible
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -86,7 +87,7 @@ const Chatbot = () => {
         body: JSON.stringify({
           contents: [{
             parts: [{
-              text: `Tu es Rayonnement, un assistant virtuel pour une plateforme africaine de mise en avant des talents et projets innovants. 
+              text: `Tu es Rayonnement, un assistant virtuel pour une plateforme africaine de mise en avant des talents et projets innovants.
 
 La plateforme Rayonnement permet aux porteurs de projets africains de présenter leurs idées innovantes dans les domaines de la technologie, l'art, l'entrepreneuriat, l'innovation, l'éducation, la santé et l'agriculture.
 
@@ -99,11 +100,20 @@ Si la question n'est pas liée à la plateforme, redirige gentiment vers les fon
       });
 
       if (!response.ok) {
-        throw new Error('Erreur API Gemini');
+        // Si l'API échoue, essayer avec un modèle alternatif ou gérer l'erreur
+        console.error('Erreur API Gemini:', response.status, response.statusText);
+        return "Désolé, le service d'IA rencontre un problème technique. " + botResponses.default;
       }
 
       const data = await response.json();
-      return data.candidates[0].content.parts[0].text;
+
+      // Vérifier si la réponse contient du contenu
+      if (data.candidates && data.candidates[0] && data.candidates[0].content) {
+        return data.candidates[0].content.parts[0].text;
+      } else {
+        console.error('Réponse API inattendue:', data);
+        return "Désolé, je n'ai pas pu traiter votre demande. " + botResponses.default;
+      }
     } catch (error) {
       console.error('Erreur lors de l\'appel à Gemini:', error);
       return "Désolé, je rencontre un problème technique. " + botResponses.default;
