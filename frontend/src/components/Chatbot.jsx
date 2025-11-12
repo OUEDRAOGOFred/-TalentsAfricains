@@ -59,7 +59,9 @@ const Chatbot = () => {
       try {
         // Charger tous les projets
         const projectsResponse = await projectService.getAll({ limit: 100 });
-        const projects = projectsResponse.projects || [];
+        console.log('Response complète:', projectsResponse); // Debug
+        const projects = projectsResponse.data?.projects || projectsResponse.projects || [];
+        console.log('Projets chargés:', projects.length); // Debug
         setAllProjects(projects);
         
         // Obtenir l'utilisateur connecté
@@ -90,6 +92,7 @@ const Chatbot = () => {
           uniqueAuthors: [...new Set(projects.map(p => `${p.first_name} ${p.last_name}`))].length
         };
         
+        console.log('Statistiques calculées:', stats); // Debug
         setPlatformStats(stats);
         setProjectsLoaded(true);
         
