@@ -45,7 +45,7 @@ const Home = () => {
       <section className="hero">
         <div className="hero-content">
           <h1 className="hero-title fade-in">
-            Découvrez les <span className="highlight">Talents Africains</span> qui façonnent l'avenir
+            Rayonnement <span className="highlight">Une Afrique qui se lève , crée et innove</span>
           </h1>
           <p className="hero-subtitle fade-in">
             Une plateforme dédiée aux porteurs de projets innovants, 

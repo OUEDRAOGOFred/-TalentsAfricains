@@ -33,7 +33,7 @@ const Header = () => {
         <nav className="navbar">
           <Link to="/" className="logo" onClick={closeMobileMenu}>
             <Globe className="logo-icon" size={32} />
-            <span className="logo-text">TalentsAfricains</span>
+            <span className="logo-text">Rayonnement</span>
           </Link>
 
           <button 
