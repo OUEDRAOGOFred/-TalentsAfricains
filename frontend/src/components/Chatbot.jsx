@@ -6,6 +6,8 @@ import { useState, useRef, useEffect } from 'react';
 import { MessageCircle, X, Send, User, Bot } from 'lucide-react';
 import { api } from '../services/api';
 import projectService from '../services/projectService';
+import authService from '../services/authService';
+import { buildGeminiContext } from '../utils/geminiContext';
 import './Chatbot.css';
 
 const Chatbot = () => {
@@ -19,6 +21,9 @@ const Chatbot = () => {
     }
   ]);
   const [allProjects, setAllProjects] = useState([]);
+  const [allUsers, setAllUsers] = useState([]);
+  const [currentUser, setCurrentUser] = useState(null);
+  const [platformStats, setPlatformStats] = useState({});
   const [projectsLoaded, setProjectsLoaded] = useState(false);
   const [inputMessage, setInputMessage] = useState('');
   const [isTyping, setIsTyping] = useState(false);
@@ -48,17 +53,53 @@ const Chatbot = () => {
     loadAllProjects();
   }, []);
 
-  // Récupérer les projets au montage du composant
+  // Charger les données complètes de la plateforme
   useEffect(() => {
-    const fetchProjects = async () => {
+    const loadPlatformData = async () => {
       try {
-        const response = await api.get('/projects');
-        setProjects(response.data);
+        // Charger tous les projets
+        const projectsResponse = await projectService.getAll({ limit: 100 });
+        const projects = projectsResponse.projects || [];
+        setAllProjects(projects);
+        
+        // Obtenir l'utilisateur connecté
+        const user = authService.getCurrentUser();
+        setCurrentUser(user);
+        
+        // Calculer les statistiques de la plateforme
+        const stats = {
+          totalProjects: projects.length,
+          totalLikes: projects.reduce((sum, p) => sum + (p.likes_count || 0), 0),
+          totalViews: projects.reduce((sum, p) => sum + (p.views_count || 0), 0),
+          totalComments: projects.reduce((sum, p) => sum + (p.comments_count || 0), 0),
+          categoriesCount: {
+            technologie: projects.filter(p => p.categorie === 'technologie').length,
+            art: projects.filter(p => p.categorie === 'art').length,
+            entrepreneuriat: projects.filter(p => p.categorie === 'entrepreneuriat').length,
+            innovation: projects.filter(p => p.categorie === 'innovation').length,
+            education: projects.filter(p => p.categorie === 'education').length,
+            sante: projects.filter(p => p.categorie === 'sante').length,
+            agriculture: projects.filter(p => p.categorie === 'agriculture').length
+          },
+          topProjects: projects
+            .sort((a, b) => (b.likes_count || 0) - (a.likes_count || 0))
+            .slice(0, 5),
+          recentProjects: projects
+            .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+            .slice(0, 5),
+          uniqueAuthors: [...new Set(projects.map(p => `${p.first_name} ${p.last_name}`))].length
+        };
+        
+        setPlatformStats(stats);
+        setProjectsLoaded(true);
+        
       } catch (error) {
-        console.error('Erreur lors de la récupération des projets:', error);
+        console.error('Erreur lors du chargement des données:', error);
+        setProjectsLoaded(true);
       }
     };
-    fetchProjects();
+
+    loadPlatformData();
   }, []);
 
   const quickReplies = [
@@ -100,7 +141,12 @@ const Chatbot = () => {
     
     // Si aucune réponse prédéfinie, utiliser Gemini AI
     try {
-      const geminiResponse = await callGeminiAPI(userMessage, allProjects);
+      const platformData = {
+        projects: allProjects,
+        stats: platformStats,
+        user: currentUser
+      };
+      const geminiResponse = await callGeminiAPI(userMessage, platformData);
       return geminiResponse;
     } catch (error) {
       console.error('Erreur avec Gemini:', error);
@@ -108,7 +154,7 @@ const Chatbot = () => {
     }
   };
 
-  const callGeminiAPI = async (message, projectsData) => {
+  const callGeminiAPI = async (message, platformData) => {
     const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 
     if (!GEMINI_API_KEY) {
@@ -116,6 +162,12 @@ const Chatbot = () => {
     }
 
     try {
+      // Préparer les données complètes de la plateforme
+      const { projects, stats, user } = platformData;
+      
+      // Construire le contexte avec la fonction helper
+      const contextText = buildGeminiContext(platformData);
+      
       // Utiliser l'API Google AI (Gemini) avec le modèle disponible
       const response = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`, {
         method: 'POST',
@@ -125,81 +177,7 @@ const Chatbot = () => {
         body: JSON.stringify({
           contents: [{
             parts: [{
-              text: `Tu es Rayonnement, l'assistant virtuel intelligent d'une plateforme africaine innovante dédiée à la mise en avant des talents et projets du continent africain.
-
-## À PROPOS DE RAYONNEMENT :
-Rayonnement est une plateforme web moderne qui connecte les porteurs de projets africains avec des investisseurs, mentors et la communauté internationale. Notre mission est de valoriser l'innovation africaine et de créer des opportunités pour les talents du continent.
-
-## FONCTIONNALITÉS PRINCIPALES :
-- **Découverte de projets** : Explorez des projets innovants dans toutes les catégories
-- **Création de profils** : Présentez vos compétences et expériences
-- **Publication de projets** : Partagez vos idées avec la communauté
-- **Réseautage** : Connectez-vous avec investisseurs et mentors
-- **Système d'interactions** : Likes, commentaires, partages
-
-## CATÉGORIES DISPONIBLES :
-1. **Technologie** : Innovation digitale, apps, IA, blockchain
-2. **Art & Culture** : Créativité, musique, cinéma, design africain
-3. **Entrepreneuriat** : Business, startups, commerce
-4. **Innovation** : Solutions créatives, produits innovants
-5. **Éducation** : Formation, e-learning, pédagogie
-6. **Santé** : Solutions médicales, bien-être, biotech
-7. **Agriculture** : AgriTech, innovations agricoles, alimentation
-
-## TYPES D'UTILISATEURS :
-- **Visiteurs** : Découvrent les projets et s'inspirent
-- **Porteurs de projets** : Créent et gèrent leurs projets
-- **Investisseurs** : Trouvent des opportunités d'investissement
-- **Mentors** : Accompagnent les porteurs de projets
-
-## COMMENT UTILISER LA PLATEFORME :
-1. **S'inscrire** : Créez un compte gratuit
-2. **Compléter son profil** : Ajoutez vos compétences et expériences
-3. **Explorer** : Découvrez des projets dans la section "Découvrir"
-4. **Créer** : Publiez vos propres projets innovants
-5. **Interagir** : Likez, commentez, partagez les projets qui vous intéressent
-6. **Réseauter** : Connectez-vous avec d'autres membres de la communauté
-
-## OBJECTIFS DE LA PLATEFORME :
-- Promouvoir l'innovation africaine à l'échelle mondiale
-- Créer des opportunités d'investissement pour les projets africains
-- Favoriser le networking entre talents africains
-- Accompagner le développement économique du continent
-- Valoriser la créativité et l'entrepreneuriat africain
-
-## SUPPORT ET CONTACT :
-- Email : support@rayonnement.com
-- Réponse sous 24h en moyenne
-
-## PROJETS DISPONIBLES SUR LA PLATEFORME :
-${projectsData && projectsData.length > 0 ? projectsData.map(project => 
-  `- **${project.titre}** (${project.categorie}) : ${project.description.substring(0, 150)}... 
-    *Auteur: ${project.first_name} ${project.last_name}*
-    *Localisation: ${project.localisation || 'Non spécifiée'}*
-    *Likes: ${project.likes_count}, Commentaires: ${project.comments_count}, Vues: ${project.views_count}*
-    *Créé le: ${new Date(project.created_at).toLocaleDateString('fr-FR')}*
-    ${project.lien_externe ? `*Lien externe: ${project.lien_externe}*` : ''}`
-).join('\n\n') : 'Aucun projet disponible pour le moment.'}
-
-## INSTRUCTIONS SPÉCIFIQUES POUR LES PROJETS :
-- **Recherche par auteur** : Si l'utilisateur mentionne un nom, recherche dans les projets de cet auteur
-- **Recherche par catégorie** : Oriente vers les bonnes catégories selon les intérêts
-- **Recherche par mots-clés** : Analyse les descriptions pour trouver des projets pertinents
-- **Recommandations** : Suggère des projets similaires ou complémentaires
-- **Détails complets** : Fournis titre, description, auteur, statistiques, date de création
-- **Liens externes** : Mentionne les liens externes quand disponibles
-
-INSTRUCTION IMPORTANTE : Tu as accès à la liste complète des projets publiés sur Rayonnement. Utilise ces informations pour :
-- Répondre aux questions spécifiques sur les projets existants
-- Recommander des projets pertinents selon les intérêts de l'utilisateur
-- Fournir des détails complets sur les auteurs et leurs projets
-- Aider les utilisateurs à découvrir des projets dans leurs domaines d'intérêt
-- Comparer des projets similaires
-- Expliquer les statistiques (likes, vues, commentaires)
-
-Réponds TOUJOURS en français, de manière helpful, engageante et professionnelle. Si la question n'est pas liée à Rayonnement, redirige gentiment vers nos fonctionnalités. Utilise les informations ci-dessus pour donner des réponses précises et complètes.
-
-Question de l'utilisateur : "${message}"`
+              text: `${contextText}\n\nQuestion de l'utilisateur : "${message}"`
             }]
           }]
         })
