@@ -18,15 +18,32 @@ import {
 } from 'lucide-react';
 import ProjectCard from '../components/ProjectCard';
 import projectService from '../services/projectService';
+import { translateProjects } from '../services/translationService';
+import { useLanguage } from '../context/LanguageContext';
 import './Home.css';
 
 const Home = () => {
+  const { language } = useLanguage();
   const [featuredProjects, setFeaturedProjects] = useState([]);
+  const [translatedProjects, setTranslatedProjects] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     loadFeaturedProjects();
   }, []);
+
+  // Traduire les projets quand la langue change
+  useEffect(() => {
+    const applyTranslation = async () => {
+      if (language === 'en' && featuredProjects.length > 0) {
+        const translated = await translateProjects(featuredProjects);
+        setTranslatedProjects(translated);
+      } else {
+        setTranslatedProjects(featuredProjects);
+      }
+    };
+    applyTranslation();
+  }, [language, featuredProjects]);
 
   const loadFeaturedProjects = async () => {
     try {
@@ -115,10 +132,10 @@ const Home = () => {
               <div className="spinner"></div>
               <p>Chargement des projets...</p>
             </div>
-          ) : featuredProjects.length > 0 ? (
+          ) : translatedProjects.length > 0 ? (
             <>
               <div className="projects-grid">
-                {featuredProjects.map(project => (
+                {translatedProjects.map(project => (
                   <ProjectCard key={project.id} project={project} />
                 ))}
               </div>

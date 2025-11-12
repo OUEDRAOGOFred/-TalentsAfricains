@@ -7,11 +7,15 @@ import { useSearchParams } from 'react-router-dom';
 import { Search } from 'lucide-react';
 import ProjectCard from '../components/ProjectCard';
 import projectService from '../services/projectService';
+import { translateProjects } from '../services/translationService';
+import { useLanguage } from '../context/LanguageContext';
 import './Discover.css';
 
 const Discover = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const { language } = useLanguage();
   const [projects, setProjects] = useState([]);
+  const [translatedProjects, setTranslatedProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState({
     search: searchParams.get('search') || '',
@@ -24,6 +28,19 @@ const Discover = () => {
   useEffect(() => {
     loadProjects();
   }, [filters]);
+
+  // Traduire les projets quand la langue change
+  useEffect(() => {
+    const applyTranslation = async () => {
+      if (language === 'en' && projects.length > 0) {
+        const translated = await translateProjects(projects);
+        setTranslatedProjects(translated);
+      } else {
+        setTranslatedProjects(projects);
+      }
+    };
+    applyTranslation();
+  }, [language, projects]);
 
   const loadProjects = async () => {
     setLoading(true);
@@ -148,9 +165,9 @@ const Discover = () => {
                 <div className="spinner"></div>
                 <p>Chargement des projets...</p>
               </div>
-            ) : projects.length > 0 ? (
+            ) : translatedProjects.length > 0 ? (
               <div className="projects-grid">
-                {projects.map(project => (
+                {translatedProjects.map(project => (
                   <ProjectCard key={project.id} project={project} />
                 ))}
               </div>
