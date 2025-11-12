@@ -89,7 +89,7 @@ const Home = () => {
             <div className="stat-card">
               <div className="stat-icon"><Users size={36} strokeWidth={1.5} /></div>
               <div className="stat-number">5000+</div>
-              <div className="stat-label">Talents africains</div>
+              <div className="stat-label">Rayonnement</div>
             </div>
             <div className="stat-card">
               <div className="stat-icon"><Briefcase size={36} strokeWidth={1.5} /></div>
