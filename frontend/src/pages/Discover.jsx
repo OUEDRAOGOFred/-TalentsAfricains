@@ -61,9 +61,9 @@ const Discover = () => {
     <div className="discover-page">
       <section className="discover-hero">
         <div className="container">
-          <h1 className="discover-title">Découvrez les Talents</h1>
+          <h1 className="discover-title">{t('discover.title')}</h1>
           <p className="discover-subtitle">
-            Explorez des projets innovants de toute l'Afrique
+            {t('discover.subtitle')}
           </p>
         </div>
       </section>
@@ -76,7 +76,7 @@ const Discover = () => {
               <input
                 type="text"
                 className="search-input"
-                placeholder="Rechercher un projet..."
+                placeholder={t('discover.search')}
                 value={filters.search}
                 onChange={(e) => handleFilterChange('search', e.target.value)}
               />
@@ -87,51 +87,51 @@ const Discover = () => {
 
             <div className="filters-grid">
               <div className="filter-group">
-                <label className="filter-label">Catégorie</label>
+                <label className="filter-label">{t('discover.category')}</label>
                 <select
                   className="filter-select"
                   value={filters.categorie}
                   onChange={(e) => handleFilterChange('categorie', e.target.value)}
                 >
-                  <option value="">Toutes les catégories</option>
-                  <option value="technologie">Technologie</option>
-                  <option value="art">Art</option>
-                  <option value="entrepreneuriat">Entrepreneuriat</option>
-                  <option value="innovation">Innovation</option>
-                  <option value="education">Éducation</option>
-                  <option value="sante">Santé</option>
-                  <option value="agriculture">Agriculture</option>
-                  <option value="autre">Autre</option>
+                  <option value="">{t('discover.all')}</option>
+                  <option value="technologie">{t('category.tech')}</option>
+                  <option value="art">{t('category.art')}</option>
+                  <option value="entrepreneuriat">{t('category.entrepreneurship')}</option>
+                  <option value="innovation">{t('category.innovation')}</option>
+                  <option value="education">{t('category.education')}</option>
+                  <option value="sante">{t('category.sante')}</option>
+                  <option value="agriculture">{t('category.agriculture')}</option>
+                  <option value="autre">{t('category.autre')}</option>
                 </select>
               </div>
 
               <div className="filter-group">
-                <label className="filter-label">Localisation</label>
+                <label className="filter-label">{t('discover.location')}</label>
                 <input
                   type="text"
                   className="filter-input"
-                  placeholder="Pays ou ville..."
+                  placeholder={t('discover.location.placeholder')}
                   value={filters.localisation}
                   onChange={(e) => handleFilterChange('localisation', e.target.value)}
                 />
               </div>
 
               <div className="filter-group">
-                <label className="filter-label">Trier par</label>
+                <label className="filter-label">{t('discover.sort')}</label>
                 <select
                   className="filter-select"
                   value={filters.sort}
                   onChange={(e) => handleFilterChange('sort', e.target.value)}
                 >
-                  <option value="recent">Plus récents</option>
-                  <option value="popular">Plus populaires</option>
-                  <option value="oldest">Plus anciens</option>
+                  <option value="recent">{t('discover.sort.recent')}</option>
+                  <option value="popular">{t('discover.sort.popular')}</option>
+                  <option value="oldest">{t('discover.sort.oldest')}</option>
                 </select>
               </div>
 
               <div className="filter-group">
                 <button className="btn btn-outline btn-sm" onClick={clearFilters}>
-                  Réinitialiser
+                  {t('discover.reset')}
                 </button>
               </div>
             </div>
@@ -141,7 +141,7 @@ const Discover = () => {
           <div className="results-section">
             <div className="results-header">
               <p className="results-count">
-                {pagination.total} projet{pagination.total > 1 ? 's' : ''} trouvé{pagination.total > 1 ? 's' : ''}
+                {pagination.total} {pagination.total > 1 ? t('discover.projectsFound') : t('discover.projectFound')}
               </p>
             </div>
 
