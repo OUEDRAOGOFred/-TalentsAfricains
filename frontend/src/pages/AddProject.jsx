@@ -5,12 +5,14 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useLanguage } from '../context/LanguageContext';
 import projectService from '../services/projectService';
 import './AddProject.css';
 
 const AddProject = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { t } = useLanguage();
   
   const [formData, setFormData] = useState({
     titre: '',
@@ -29,10 +31,10 @@ const AddProject = () => {
   if (user?.role !== 'porteur_projet') {
     return (
       <div className="container" style={{ padding: '4rem 1rem', textAlign: 'center' }}>
-        <h2>Accès non autorisé</h2>
-        <p>Seuls les porteurs de projet peuvent ajouter des projets.</p>
+        <h2>{t('addProject.unauthorized')}</h2>
+        <p>{t('addProject.unauthorizedText')}</p>
         <button onClick={() => navigate('/discover')} className="btn btn-primary">
-          Retour aux projets
+          {t('project.backToProjects')}
         </button>
       </div>
     );
@@ -82,7 +84,7 @@ const AddProject = () => {
       const response = await projectService.create(data);
       navigate(`/project/${response.data.project.id}`);
     } catch (err) {
-      setError(err.response?.data?.message || 'Une erreur est survenue lors de la création du projet');
+      setError(err.response?.data?.message || t('addProject.error'));
     } finally {
       setLoading(false);
     }
@@ -92,8 +94,8 @@ const AddProject = () => {
     <div className="add-project-page">
       <div className="container">
         <div className="page-header">
-          <h1>Créer un nouveau projet</h1>
-          <p>Partagez votre projet innovant avec la communauté</p>
+          <h1>{t('addProject.title')}</h1>
+          <p>{t('addProject.subtitle')}</p>
         </div>
 
         <form onSubmit={handleSubmit} className="project-form">
@@ -104,16 +106,16 @@ const AddProject = () => {
           )}
 
           <div className="form-section">
-            <h2 className="section-title">Informations générales</h2>
+            <h2 className="section-title">{t('addProject.section.general')}</h2>
 
             <div className="form-group">
-              <label htmlFor="titre" className="form-label required">Titre du projet</label>
+              <label htmlFor="titre" className="form-label required">{t('addProject.form.title')}</label>
               <input
                 type="text"
                 id="titre"
                 name="titre"
                 className="form-input"
-                placeholder="Ex: Application mobile pour l'agriculture"
+                placeholder={t('addProject.placeholder.title')}
                 value={formData.titre}
                 onChange={handleChange}
                 required
@@ -121,23 +123,23 @@ const AddProject = () => {
             </div>
 
             <div className="form-group">
-              <label htmlFor="description" className="form-label required">Description</label>
+              <label htmlFor="description" className="form-label required">{t('addProject.form.description')}</label>
               <textarea
                 id="description"
                 name="description"
                 className="form-textarea"
-                placeholder="Décrivez votre projet en détail..."
+                placeholder={t('addProject.placeholder.description')}
                 value={formData.description}
                 onChange={handleChange}
                 rows="8"
                 required
               />
-              <small className="form-hint">Minimum 50 caractères</small>
+              <small className="form-hint">{t('addProject.hint.description')}</small>
             </div>
 
             <div className="form-row">
               <div className="form-group">
-                <label htmlFor="categorie" className="form-label required">Catégorie</label>
+                <label htmlFor="categorie" className="form-label required">{t('addProject.form.category')}</label>
                 <select
                   id="categorie"
                   name="categorie"
@@ -146,25 +148,25 @@ const AddProject = () => {
                   onChange={handleChange}
                   required
                 >
-                  <option value="technologie">Technologie</option>
-                  <option value="art">Art</option>
-                  <option value="entrepreneuriat">Entrepreneuriat</option>
-                  <option value="innovation">Innovation</option>
-                  <option value="education">Éducation</option>
-                  <option value="sante">Santé</option>
-                  <option value="agriculture">Agriculture</option>
-                  <option value="autre">Autre</option>
+                  <option value="technologie">{t('category.tech')}</option>
+                  <option value="art">{t('category.art')}</option>
+                  <option value="entrepreneuriat">{t('category.entrepreneurship')}</option>
+                  <option value="innovation">{t('category.innovation')}</option>
+                  <option value="education">{t('category.education')}</option>
+                  <option value="sante">{t('category.sante')}</option>
+                  <option value="agriculture">{t('category.agriculture')}</option>
+                  <option value="autre">{t('category.autre')}</option>
                 </select>
               </div>
 
               <div className="form-group">
-                <label htmlFor="localisation" className="form-label">Localisation</label>
+                <label htmlFor="localisation" className="form-label">{t('addProject.form.location')}</label>
                 <input
                   type="text"
                   id="localisation"
                   name="localisation"
                   className="form-input"
-                  placeholder="Ex: Dakar, Sénégal"
+                  placeholder={t('addProject.placeholder.location')}
                   value={formData.localisation}
                   onChange={handleChange}
                 />
@@ -172,25 +174,25 @@ const AddProject = () => {
             </div>
 
             <div className="form-group">
-              <label htmlFor="lien_externe" className="form-label">Lien externe</label>
+              <label htmlFor="lien_externe" className="form-label">{t('addProject.form.externalLink')}</label>
               <input
                 type="url"
                 id="lien_externe"
                 name="lien_externe"
                 className="form-input"
-                placeholder="https://votre-site.com"
+                placeholder={t('addProject.placeholder.externalLink')}
                 value={formData.lien_externe}
                 onChange={handleChange}
               />
-              <small className="form-hint">Site web, prototype, démo, etc.</small>
+              <small className="form-hint">{t('addProject.hint.externalLink')}</small>
             </div>
           </div>
 
           <div className="form-section">
-            <h2 className="section-title">Visuels</h2>
+            <h2 className="section-title">{t('addProject.section.visuals')}</h2>
 
             <div className="form-group">
-              <label htmlFor="image_principale" className="form-label">Image principale</label>
+              <label htmlFor="image_principale" className="form-label">{t('addProject.form.mainImage')}</label>
               <input
                 type="file"
                 id="image_principale"
@@ -206,7 +208,7 @@ const AddProject = () => {
             </div>
 
             <div className="form-group">
-              <label htmlFor="galerie_images" className="form-label">Galerie d'images</label>
+              <label htmlFor="galerie_images" className="form-label">{t('addProject.form.gallery')}</label>
               <input
                 type="file"
                 id="galerie_images"
@@ -215,10 +217,10 @@ const AddProject = () => {
                 onChange={handleGalerieImages}
                 className="form-file"
               />
-              <small className="form-hint">Maximum 5 images</small>
+              <small className="form-hint">{t('addProject.hint.gallery')}</small>
               {galerieImages.length > 0 && (
                 <div className="file-preview">
-                  ✅ {galerieImages.length} image(s) sélectionnée(s)
+                  ✅ {galerieImages.length} {t('addProject.imagesSelected')}
                 </div>
               )}
             </div>
@@ -230,14 +232,14 @@ const AddProject = () => {
               onClick={() => navigate(-1)}
               className="btn btn-outline btn-lg"
             >
-              Annuler
+              {t('common.cancel')}
             </button>
             <button
               type="submit"
               className="btn btn-primary btn-lg"
               disabled={loading}
             >
-              {loading ? 'Publication...' : 'Publier le projet'}
+              {loading ? t('addProject.publishing') : t('addProject.form.submit')}
             </button>
           </div>
         </form>
