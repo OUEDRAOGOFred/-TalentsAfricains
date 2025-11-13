@@ -22,7 +22,6 @@ import { useAuth } from '../context/AuthContext';
 import { useLanguage } from '../context/LanguageContext';
 import projectService from '../services/projectService';
 import interactionService from '../services/interactionService';
-import { translateProject, translateComments } from '../services/translationService';
 import './ProjectDetails.css';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
@@ -31,12 +30,10 @@ const ProjectDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { user, isAuthenticated } = useAuth();
-  const { language } = useLanguage();
+  const { language, t } = useLanguage();
   
   const [project, setProject] = useState(null);
-  const [translatedProject, setTranslatedProject] = useState(null);
   const [comments, setComments] = useState([]);
-  const [translatedComments, setTranslatedComments] = useState([]);
   const [newComment, setNewComment] = useState('');
   const [loading, setLoading] = useState(true);
   const [liked, setLiked] = useState(false);
@@ -45,26 +42,6 @@ const ProjectDetails = () => {
   useEffect(() => {
     loadProject();
   }, [id]);
-
-  // Traduire le projet et les commentaires quand la langue change
-  useEffect(() => {
-    const applyTranslation = async () => {
-      if (language === 'en') {
-        if (project) {
-          const translated = await translateProject(project);
-          setTranslatedProject(translated);
-        }
-        if (comments.length > 0) {
-          const translatedCmts = await translateComments(comments);
-          setTranslatedComments(translatedCmts);
-        }
-      } else {
-        setTranslatedProject(project);
-        setTranslatedComments(comments);
-      }
-    };
-    applyTranslation();
-  }, [language, project, comments]);
 
   const loadProject = async () => {
     try {
@@ -141,17 +118,13 @@ const ProjectDetails = () => {
   if (!project) {
     return (
       <div className="empty-state" style={{ minHeight: '80vh' }}>
-        <h2>Projet non trouvé</h2>
+        <h2>{t('project.notFound')}</h2>
         <Link to="/discover">
-          <button className="btn btn-primary">Retour aux projets</button>
+          <button className="btn btn-primary">{t('project.backToProjects')}</button>
         </Link>
       </div>
     );
   }
-
-  // Utiliser le projet traduit ou original
-  const displayProject = translatedProject || project;
-  const displayComments = translatedComments.length > 0 ? translatedComments : comments;
 
   const imageUrl = project.image_principale 
     ? `${API_URL.replace('/api', '')}/uploads/${project.image_principale}`
@@ -166,7 +139,7 @@ const ProjectDetails = () => {
       <div className="project-hero">
         {imageUrl && (
           <div className="project-hero-image">
-            <img src={imageUrl} alt={displayProject.titre} />
+            <img src={imageUrl} alt={project.titre} />
             <div className="project-hero-overlay"></div>
           </div>
         )}
@@ -177,15 +150,15 @@ const ProjectDetails = () => {
           <div className="project-main">
             <div className="project-header">
               <div className="project-meta-tags">
-                <span className="badge badge-primary">{displayProject.categorie}</span>
-                {displayProject.localisation && (
+                <span className="badge badge-primary">{project.categorie}</span>
+                {project.localisation && (
                   <span className="location-badge">
-                    <MapPin size={16} /> {displayProject.localisation}
+                    <MapPin size={16} /> {project.localisation}
                   </span>
                 )}
               </div>
 
-              <h1 className="project-title">{displayProject.titre}</h1>
+              <h1 className="project-title">{project.titre}</h1>
 
               <div className="project-stats-bar">
                 <button 
@@ -196,37 +169,37 @@ const ProjectDetails = () => {
                   <span className="like-count">{likesCount}</span>
                 </button>
                 <span className="stat">
-                  <MessageCircle size={18} /> {displayComments.length} commentaires
+                  <MessageCircle size={18} /> {comments.length} {t('project.comments')}
                 </span>
                 <span className="stat">
-                  <Eye size={18} /> {project.views_count || 0} vues
+                  <Eye size={18} /> {project.views_count || 0} {t('project.views')}
                 </span>
               </div>
             </div>
 
             <div className="project-description">
-              <h2>Description du projet</h2>
-              <p>{displayProject.description}</p>
+              <h2>{t('project.description')}</h2>
+              <p>{project.description}</p>
             </div>
 
-            {displayProject.lien_externe && (
+            {project.lien_externe && (
               <div className="project-link">
-                <h3>Lien externe</h3>
-                <a href={displayProject.lien_externe} target="_blank" rel="noopener noreferrer" className="external-link">
-                  <ExternalLink size={18} /> {displayProject.lien_externe}
+                <h3>{t('project.externalLink')}</h3>
+                <a href={project.lien_externe} target="_blank" rel="noopener noreferrer" className="external-link">
+                  <ExternalLink size={18} /> {project.lien_externe}
                 </a>
               </div>
             )}
 
             {galerieImages.length > 0 && (
               <div className="project-gallery">
-                <h3>Galerie d'images</h3>
+                <h3>{t('project.gallery')}</h3>
                 <div className="gallery-grid">
                   {galerieImages.map((img, index) => (
                     <img
                       key={index}
                       src={`${API_URL.replace('/api', '')}/uploads/${img}`}
-                      alt={`${displayProject.titre} ${index + 1}`}
+                      alt={`${project.titre} ${index + 1}`}
                       className="gallery-image"
                     />
                   ))}
@@ -238,14 +211,14 @@ const ProjectDetails = () => {
             <div className="comments-section">
               <h2>
                 <MessageCircle size={24} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
-                Commentaires ({displayComments.length})
+                {t('project.comments')} ({comments.length})
               </h2>
 
               {isAuthenticated && (
                 <form onSubmit={handleCommentSubmit} className="comment-form">
                   <textarea
                     className="comment-input"
-                    placeholder="Ajoutez un commentaire..."
+                    placeholder={t('project.addComment')}
                     value={newComment}
                     onChange={(e) => setNewComment(e.target.value)}
                     rows="3"
@@ -253,7 +226,7 @@ const ProjectDetails = () => {
                   />
                   <button type="submit" className="btn btn-primary">
                     <Send size={18} style={{ marginRight: '6px' }} />
-                    Publier le commentaire
+                    {t('project.submitComment')}
                   </button>
                 </form>
               )}
@@ -268,24 +241,24 @@ const ProjectDetails = () => {
                 }}>
                   <p style={{ margin: 0, color: '#666' }}>
                     <Link to="/login" style={{ color: 'var(--color-primary)', fontWeight: '600' }}>
-                      Connectez-vous
-                    </Link> pour laisser un commentaire
+                      {t('project.login')}
+                    </Link> {t('project.loginToComment')}
                   </p>
                 </div>
               )}
 
               <div className="comments-list">
-                {displayComments.length === 0 ? (
+                {comments.length === 0 ? (
                   <div className="no-comments" style={{
                     textAlign: 'center',
                     padding: '2rem',
                     color: '#999',
                     fontStyle: 'italic'
                   }}>
-                    Aucun commentaire pour le moment. Soyez le premier à commenter!
+                    {t('project.noComments')}
                   </div>
                 ) : (
-                  displayComments.map((comment) => (
+                  comments.map((comment) => (
                     <div key={comment.id} className="comment-item">
                       <div className="comment-avatar">
                         {comment.photo_profil ? (
@@ -321,7 +294,7 @@ const ProjectDetails = () => {
           {/* Sidebar auteur */}
           <aside className="project-sidebar">
             <div className="author-card">
-              <h3>Porteur du projet</h3>
+              <h3>{t('project.author.title')}</h3>
               <div className="author-info">
                 {project.author_photo ? (
                   <img
@@ -346,7 +319,7 @@ const ProjectDetails = () => {
                   style={{ width: '100%', marginBottom: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
                 >
                   <Mail size={18} />
-                  Contacter par email
+                  {t('project.author.contact')}
                 </button>
               )}
 

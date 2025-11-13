@@ -7,15 +7,13 @@ import { useSearchParams } from 'react-router-dom';
 import { Search } from 'lucide-react';
 import ProjectCard from '../components/ProjectCard';
 import projectService from '../services/projectService';
-import { translateProjects } from '../services/translationService';
 import { useLanguage } from '../context/LanguageContext';
 import './Discover.css';
 
 const Discover = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const { language } = useLanguage();
+  const { t } = useLanguage();
   const [projects, setProjects] = useState([]);
-  const [translatedProjects, setTranslatedProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState({
     search: searchParams.get('search') || '',
@@ -28,19 +26,6 @@ const Discover = () => {
   useEffect(() => {
     loadProjects();
   }, [filters]);
-
-  // Traduire les projets quand la langue change
-  useEffect(() => {
-    const applyTranslation = async () => {
-      if (language === 'en' && projects.length > 0) {
-        const translated = await translateProjects(projects);
-        setTranslatedProjects(translated);
-      } else {
-        setTranslatedProjects(projects);
-      }
-    };
-    applyTranslation();
-  }, [language, projects]);
 
   const loadProjects = async () => {
     setLoading(true);
@@ -163,21 +148,21 @@ const Discover = () => {
             {loading ? (
               <div className="loading-container">
                 <div className="spinner"></div>
-                <p>Chargement des projets...</p>
+                <p>{t('common.loading')}</p>
               </div>
-            ) : translatedProjects.length > 0 ? (
+            ) : projects.length > 0 ? (
               <div className="projects-grid">
-                {translatedProjects.map(project => (
+                {projects.map(project => (
                   <ProjectCard key={project.id} project={project} />
                 ))}
               </div>
             ) : (
               <div className="empty-state">
                 <div className="empty-icon"><Search size={48} strokeWidth={1.5} /></div>
-                <h3>Aucun projet trouvé</h3>
-                <p>Essayez de modifier vos filtres de recherche</p>
+                <h3>{t('discover.noResults')}</h3>
+                <p>{t('discover.noResults.hint')}</p>
                 <button className="btn btn-primary" onClick={clearFilters}>
-                  Voir tous les projets
+                  {t('home.categories.viewAll')}
                 </button>
               </div>
             )}

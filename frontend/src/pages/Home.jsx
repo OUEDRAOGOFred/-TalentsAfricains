@@ -18,32 +18,17 @@ import {
 } from 'lucide-react';
 import ProjectCard from '../components/ProjectCard';
 import projectService from '../services/projectService';
-import { translateProjects } from '../services/translationService';
 import { useLanguage } from '../context/LanguageContext';
 import './Home.css';
 
 const Home = () => {
-  const { language } = useLanguage();
+  const { t } = useLanguage();
   const [featuredProjects, setFeaturedProjects] = useState([]);
-  const [translatedProjects, setTranslatedProjects] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     loadFeaturedProjects();
   }, []);
-
-  // Traduire les projets quand la langue change
-  useEffect(() => {
-    const applyTranslation = async () => {
-      if (language === 'en' && featuredProjects.length > 0) {
-        const translated = await translateProjects(featuredProjects);
-        setTranslatedProjects(translated);
-      } else {
-        setTranslatedProjects(featuredProjects);
-      }
-    };
-    applyTranslation();
-  }, [language, featuredProjects]);
 
   const loadFeaturedProjects = async () => {
     try {
@@ -62,22 +47,20 @@ const Home = () => {
       <section className="hero">
         <div className="hero-content">
           <h1 className="hero-title fade-in">
-            Rayonnement <span className="highlight">Une Afrique qui se lève , crée et innove</span>
+            {t('home.hero.title')} <span className="highlight">{t('home.hero.subtitle')}</span>
           </h1>
           <p className="hero-subtitle fade-in">
-            Une plateforme dédiée aux porteurs de projets innovants, 
-            aux entrepreneurs et aux créateurs du continent africain. 
-            Connectez-vous avec des investisseurs et partagez votre vision.
+            {t('home.hero.description')}
           </p>
           <div className="hero-actions fade-in">
             <Link to="/discover">
               <button className="btn btn-primary btn-lg">
-                Explorer les projets
+                {t('home.hero.cta')}
               </button>
             </Link>
             <Link to="/register">
               <button className="btn btn-outline btn-lg">
-                Créer un compte
+                {t('nav.register')}
               </button>
             </Link>
           </div>
@@ -96,22 +79,22 @@ const Home = () => {
             <div className="stat-card">
               <div className="stat-icon"><Globe size={36} strokeWidth={1.5} /></div>
               <div className="stat-number">50+</div>
-              <div className="stat-label">Pays représentés</div>
+              <div className="stat-label">{t('home.stats.countries')}</div>
             </div>
             <div className="stat-card">
               <div className="stat-icon"><Lightbulb size={36} strokeWidth={1.5} /></div>
               <div className="stat-number">1000+</div>
-              <div className="stat-label">Projets innovants</div>
+              <div className="stat-label">{t('home.stats.projects')}</div>
             </div>
             <div className="stat-card">
               <div className="stat-icon"><Users size={36} strokeWidth={1.5} /></div>
               <div className="stat-number">5000+</div>
-              <div className="stat-label">Rayonnement</div>
+              <div className="stat-label">{t('home.stats.talents')}</div>
             </div>
             <div className="stat-card">
               <div className="stat-icon"><Briefcase size={36} strokeWidth={1.5} /></div>
               <div className="stat-number">200+</div>
-              <div className="stat-label">Investisseurs actifs</div>
+              <div className="stat-label">{t('home.stats.investors')}</div>
             </div>
           </div>
         </div>
@@ -121,35 +104,35 @@ const Home = () => {
       <section className="section featured-projects">
         <div className="container">
           <div className="section-header">
-            <h2 className="section-title">Projets mis en avant</h2>
+            <h2 className="section-title">{t('home.featured.title')}</h2>
             <p className="section-subtitle">
-              Découvrez les projets les plus populaires et innovants de notre communauté
+              {t('home.featured.subtitle')}
             </p>
           </div>
 
           {loading ? (
             <div className="loading-container">
               <div className="spinner"></div>
-              <p>Chargement des projets...</p>
+              <p>{t('common.loading')}</p>
             </div>
-          ) : translatedProjects.length > 0 ? (
+          ) : featuredProjects.length > 0 ? (
             <>
               <div className="projects-grid">
-                {translatedProjects.map(project => (
+                {featuredProjects.map(project => (
                   <ProjectCard key={project.id} project={project} />
                 ))}
               </div>
               <div className="section-footer">
                 <Link to="/discover">
                   <button className="btn btn-primary">
-                    Voir tous les projets →
+                    {t('home.categories.viewAll')}
                   </button>
                 </Link>
               </div>
             </>
           ) : (
             <div className="empty-state">
-              <p>Aucun projet disponible pour le moment.</p>
+              <p>{t('discover.noResults')}</p>
             </div>
           )}
         </div>
@@ -159,27 +142,27 @@ const Home = () => {
       <section className="section categories-section">
         <div className="container">
           <div className="section-header">
-            <h2 className="section-title">Explorer par catégorie</h2>
+            <h2 className="section-title">{t('home.categories.title')}</h2>
             <p className="section-subtitle">
-              Trouvez des projets dans votre domaine d'intérêt
+              {t('home.categories.subtitle')}
             </p>
           </div>
 
           <div className="categories-grid">
             <Link to="/discover?categorie=technologie" className="category-card">
               <div className="category-icon"><Laptop size={32} strokeWidth={1.5} /></div>
-              <h3 className="category-name">Technologie</h3>
-              <p className="category-description">Innovation digitale et tech</p>
+              <h3 className="category-name">{t('category.technologie')}</h3>
+              <p className="category-description">{t('category.tech.desc')}</p>
             </Link>
             <Link to="/discover?categorie=art" className="category-card">
               <div className="category-icon"><Palette size={32} strokeWidth={1.5} /></div>
-              <h3 className="category-name">Art & Culture</h3>
-              <p className="category-description">Créativité et expression</p>
+              <h3 className="category-name">{t('category.art')}</h3>
+              <p className="category-description">{t('category.art.desc')}</p>
             </Link>
             <Link to="/discover" className="category-card">
               <div className="category-icon"><ArrowRight size={32} strokeWidth={1.5} /></div>
-              <h3 className="category-name">Autres</h3>
-              <p className="category-description">Entrepreneuriat et plus</p>
+              <h3 className="category-name">{t('category.others')}</h3>
+              <p className="category-description">{t('category.others.desc')}</p>
             </Link>
           </div>
         </div>
@@ -189,14 +172,13 @@ const Home = () => {
       <section className="cta-section">
         <div className="container">
           <div className="cta-content">
-            <h2 className="cta-title">Prêt à partager votre projet ?</h2>
+            <h2 className="cta-title">{t('home.cta.title')}</h2>
             <p className="cta-text">
-              Rejoignez des milliers de rayonnement qui utilisent notre plateforme 
-              pour présenter leurs projets innovants et connecter avec des investisseurs.
+              {t('home.cta.text')}
             </p>
             <Link to="/register">
               <button className="btn btn-primary btn-lg">
-                Commencer maintenant
+                {t('home.cta.button')}
               </button>
             </Link>
           </div>
